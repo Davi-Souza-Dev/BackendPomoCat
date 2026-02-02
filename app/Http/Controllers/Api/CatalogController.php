@@ -21,8 +21,10 @@ class CatalogController
             if (! $user = JWTAuth::parseToken()->authenticate()) {
                 return response()->json(["error" => 'Usuario Não Encontrado'], 404);
             }
-            $cards = Card::all();
+            $cards = Card::orderByRaw("FIELD(rarity, 'comum', 'incomum', 'raro', 'epico', 'lendario') ASC")->get();
             $userCollection = $user->cards()->pluck('card_id')->toArray();
+            $totalCards = Card::all()->count();
+            $unlockCards = 0;
             foreach ($cards as $card) {
                 if (!in_array($card->id, $userCollection)) {
                     $card->image = "bloqueado.png";
@@ -30,7 +32,8 @@ class CatalogController
                 }
             }
             return [
-                "cards" => $cards
+                "cards" => $cards,
+                "total" => $totalCards,
             ];
         } catch (TokenExpiredException $e) {
             return response()->json(['error' => 'Token expirado'], 401);
