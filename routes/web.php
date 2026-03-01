@@ -9,24 +9,24 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Laravel\Fortify\Features;
 
-// Route::get('/', function () {
-//     return Inertia::render('Index');
-// })->name('index');
+Route::get('/', function () {
+    return redirect()->route('pomodoro');
+})->name('index');
 
-Route::get('/catalogo',function(){
-    return Inertia::render('Catalogo',['cards'=>Card::all()]);
+Route::get('/catalogo', function () {
+    return Inertia::render('Catalogo', ['cards' => Card::all()]);
 });
 
 
 
 // CARDS
-Route::post('/card/set',[CardController::class,"setCard"])->name('card.set');
-Route::post('/card/delete',[CardController::class,"delete"])->name('card.delete');
+Route::post('/card/set', [CardController::class, "setCard"])->name('card.set');
+Route::post('/card/delete', [CardController::class, "delete"])->name('card.delete');
 
 // POMODORO
-Route::get('/pomodoro',[PomodoroController::class,'index'])->name('pomodoro')->middleware(Auth::class);
+Route::get('/pomodoro', [PomodoroController::class, 'index'])->name('pomodoro')->middleware(Auth::class);
 
 // AUTH
-Route::get('auth/login',[AuthController::class,'loginForm'])->name('auth.loginForm');
-Route::post('auth/login',[AuthController::class,'login'])->name('auth.login');
-Route::post('auth/logingoogle',[AuthController::class,'loginGoogle'])->name('auth.loginGoogle');
+Route::get('auth/login', [AuthController::class, 'loginForm'])->name('auth.loginForm');
+Route::post('auth/login', [AuthController::class, 'login'])->name('auth.login');
+Route::post('auth/logingoogle', [AuthController::class, 'loginGoogle'])->name('auth.loginGoogle');
