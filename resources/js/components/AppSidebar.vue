@@ -1,65 +1,57 @@
 <script setup lang="ts">
-import {
-  IconCamera,
-  IconChartBar,
-  IconDashboard,
-  IconDatabase,
-  IconFileAi,
-  IconFileDescription,
-  IconFolder,
-  IconHelp,
-  IconInnerShadowTop,
-  IconListDetails,
-  IconReport,
-  IconSearch,
-  IconSettings,
-  IconUsers,
-} from "@tabler/icons-vue"
-
-import NavDocuments from '@/components/NavDocuments.vue'
-import NavMain from '@/components/NavMain.vue'
-import NavSecondary from '@/components/NavSecondary.vue'
-import NavUser from '@/components/NavUser.vue'
+import { Calendar, ChartLineIcon, Home, Inbox, Search, Settings } from 'lucide-vue-next'
 import {
   Sidebar,
   SidebarContent,
-  SidebarFooter,
-  SidebarHeader,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/components/ui/sidebar'
+import NavUser from './NavUser.vue'
+import SidebarFooter from './ui/sidebar/SidebarFooter.vue'
+import { useUserStore } from '@/stores/UserStore'
 
-const data = {
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
+// Menu items.
+const items = [
+  {
+    title: 'Inicio',
+    url: '#',
+    icon: Home,
   },
-  navMain: [
-    {
-      title: "Dashboard",
-      url: "/",
-      icon: IconDashboard,
-    },
-    {
-      title: "Catalogo",
-      url: "/catalogo",
-      icon: IconListDetails,
-    },
-  ],
-}
+  {
+    title: 'Dados',
+    url: '#',
+    icon: ChartLineIcon,
+  },
+]
+
+const userStore = useUserStore()
 </script>
 
 <template>
-  <Sidebar collapsible="offcanvas">
-    <SidebarHeader>
-    </SidebarHeader>
-    <SidebarContent>
-      <NavMain :items="data.navMain" />
+  <Sidebar>
+    <SidebarContent class="bg-background">
+      <SidebarGroup>
+        <SidebarGroupLabel>Menu</SidebarGroupLabel>
+        <SidebarGroupContent>
+          <SidebarMenu>
+            <SidebarMenuItem v-for="item in items" :key="item.title">
+              <SidebarMenuButton as-child>
+                <a :href="item.url">
+                  <component :is="item.icon" />
+                  <span>{{ item.title }}</span>
+                </a>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          </SidebarMenu>
+        </SidebarGroupContent>
+      </SidebarGroup>
     </SidebarContent>
-    <SidebarFooter>
-      <NavUser :user="data.user" />
+    <SidebarFooter class="bg-background">
+      <NavUser/>
     </SidebarFooter>
   </Sidebar>
 </template>

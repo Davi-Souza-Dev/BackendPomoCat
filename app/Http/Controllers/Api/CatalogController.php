@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\Card;
+use App\Models\User;
 use App\Models\UserCard;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Throwable;
 use Tymon\JWTAuth\Exceptions\JWTException;
@@ -18,13 +20,10 @@ class CatalogController
     {
         try {
             // CHECK USER
-            if (! $user = JWTAuth::parseToken()->authenticate()) {
-                return response()->json(["error" => 'Usuario Não Encontrado'], 404);
-            }
+            $user = User::where('username',$request->username)->first();
             $cards = Card::orderByRaw("FIELD(rarity, 'comum', 'incomum', 'raro', 'epico', 'lendario') ASC")->get();
-            $userCollection = $user->cards()->pluck('card_id')->toArray();
+            $userCollection = UserCard::where('user_id',$user->id)->pluck('card_id')->toArray();
             $totalCards = Card::all()->count();
-            $unlockCards = 0;
             foreach ($cards as $card) {
                 if (!in_array($card->id, $userCollection)) {
                     $card->image = "bloqueado.png";
@@ -35,14 +34,8 @@ class CatalogController
                 "cards" => $cards,
                 "total" => $totalCards,
             ];
-        } catch (TokenExpiredException $e) {
-            return response()->json(['error' => 'Token expirado'], 401);
-        } catch (TokenInvalidException $e) {
-            return response()->json(['error' => 'Token inválido'], 401);
-        } catch (JWTException $e) {
-            return response()->json(['error' => 'Erro ao processar o token'], 500);
         } catch (Throwable $error) {
-            return response()->json(['error' => $error->getMessage()], 500);
+            return response()->json(['error' => $error->getMessage()], 422);
         }
     }
 

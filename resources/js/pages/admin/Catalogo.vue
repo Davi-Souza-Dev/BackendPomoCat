@@ -13,7 +13,7 @@ import {
     AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
 import Button from '@/components/ui/button/Button.vue';
-import { useCardStore } from '@/Stores/CardStore';
+import { useCardStore } from '@/stores/admin/CardStore';
 import { CardType } from '@/types/types';
 import { PlusCircleIcon } from 'lucide-vue-next';
 import { ref } from 'vue';
@@ -23,6 +23,7 @@ const cardStore = useCardStore();
 import CardCat from '@/components/catalog/CardCat.vue';
 import AppLayout from '@/layouts/AppLayout.vue';
 import DialogCard from '@/components/catalog/DialogCard.vue';
+import AdminLayout from '@/layouts/AdminLayout.vue';
 interface Props {
     cards: CardType[];
 }
@@ -59,7 +60,7 @@ const deleteCard = async (id: number) => {
 </script>
 
 <template>
-    <AppLayout page="Catálogo">
+    <AdminLayout page="Catálogo">
         <DialogCard :open="showDialog" @close="showDialog = !showDialog" />
         <header class="menubar">
             <Button variant="outline" type="button" @click="showDialog = true">
@@ -75,7 +76,7 @@ const deleteCard = async (id: number) => {
                 @delete="deleteCard"
             />
         </div>
-    </AppLayout>
+    </AdminLayout>
 </template>
 
 <style lang="css" scoped>

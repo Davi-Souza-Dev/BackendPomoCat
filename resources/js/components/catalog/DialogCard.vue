@@ -25,7 +25,7 @@ import {
 import { ref } from 'vue';
 import { toast, Toaster } from 'vue-sonner';
 import 'vue-sonner/style.css';
-import { useCardStore } from '@/Stores/CardStore';
+import { useCardStore } from '@/stores/admin/CardStore';
 import UploadImagem from './UploadImagem.vue';
 import Input from '../ui/input/Input.vue';
 

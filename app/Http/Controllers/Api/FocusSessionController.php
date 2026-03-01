@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Api;
 
 use App\Models\Card;
 use App\Models\FocusSession;
+use App\Models\User;
 use App\Models\UserCard;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Throwable;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Exceptions\TokenExpiredException;
@@ -19,9 +21,8 @@ class FocusSessionController extends Controller
 
         try {
             // CHECK USER
-            if (! $user = JWTAuth::parseToken()->authenticate()) {
-                return response()->json(["error" => 'Usuario Não Encontrado'], 404);
-            }
+            $user = User::where('username',$request->username)->first();
+  
 
             $focus = FocusSession::create([
                 "user_id" => $user->id,
@@ -36,14 +37,8 @@ class FocusSessionController extends Controller
                 ]], 200);
             }
 
-        } catch (TokenExpiredException $e) {
-            return response()->json(['error' => 'Token expirado'], 401);
-        } catch (TokenInvalidException $e) {
-            return response()->json(['error' => 'Token inválido'], 401);
-        } catch (JWTException $e) {
-            return response()->json(['error' => 'Erro ao processar o token'], 500);
         } catch (Throwable $error) {
-            return response()->json(['error' => $error->getMessage()], 500);
+            return response()->json(['error' => $error->getMessage()], 422);
         }
     }
 

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Input from '@/components/ui/input/Input.vue';
 import Label from '@/components/ui/label/Label.vue';
-import { useCardStore } from '@/Stores/CardStore';
+import { useCardStore } from '@/stores/admin/CardStore';
 import { UploadCloud } from 'lucide-vue-next';
 import { ref, watch } from 'vue';
 const cardStore = useCardStore();

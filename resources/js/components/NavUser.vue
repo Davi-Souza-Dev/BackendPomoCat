@@ -1,17 +1,7 @@
 <script setup lang="ts">
-import {
-  IconCreditCard,
-  IconDotsVertical,
-  IconLogout,
-  IconNotification,
-  IconUserCircle,
-} from "@tabler/icons-vue"
+import { BellIcon, ChevronsUpDown, LogOut } from 'lucide-vue-next'
 
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from '@/components/ui/avatar'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -27,18 +17,10 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from '@/components/ui/sidebar'
+import { useUserStore } from '@/stores/UserStore'
 
-interface User {
-  name: string
-  email: string
-  avatar: string
-}
 
-defineProps<{
-  user: User
-}>()
-
-const { isMobile } = useSidebar()
+const userStore = useUserStore();
 </script>
 
 <template>
@@ -50,63 +32,30 @@ const { isMobile } = useSidebar()
             size="lg"
             class="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
           >
-            <Avatar class="h-8 w-8 rounded-lg grayscale">
-              <AvatarImage :src="user.avatar" :alt="user.name" />
+            <!-- <Avatar class="h-8 w-8 rounded-lg">
+              <AvatarImage :src="userStore.user.photo" />
               <AvatarFallback class="rounded-lg">
                 CN
               </AvatarFallback>
-            </Avatar>
+            </Avatar> -->
             <div class="grid flex-1 text-left text-sm leading-tight">
-              <span class="truncate font-medium">{{ user.name }}</span>
-              <span class="text-muted-foreground truncate text-xs">
-                {{ user.email }}
-              </span>
+              <span class="truncate font-medium">{{ userStore.user.username }}</span>
             </div>
-            <IconDotsVertical class="ml-auto size-4" />
+            <ChevronsUpDown class="ml-auto size-4" />
           </SidebarMenuButton>
         </DropdownMenuTrigger>
         <DropdownMenuContent
-          class="w-(--reka-dropdown-menu-trigger-width) min-w-56 rounded-lg"
-          :side="isMobile ? 'bottom' : 'right'"
-          :side-offset="4"
+          class="w-[--reka-dropdown-menu-trigger-width] min-w-56 rounded-lg bg-background"
+          side="bottom"
           align="end"
+          :side-offset="4"
         >
-          <DropdownMenuLabel class="p-0 font-normal">
-            <div class="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-              <Avatar class="h-8 w-8 rounded-lg">
-                <AvatarImage :src="user.avatar" :alt="user.name" />
-                <AvatarFallback class="rounded-lg">
-                  CN
-                </AvatarFallback>
-              </Avatar>
-              <div class="grid flex-1 text-left text-sm leading-tight">
-                <span class="truncate font-medium">{{ user.name }}</span>
-                <span class="text-muted-foreground truncate text-xs">
-                  {{ user.email }}
-                </span>
-              </div>
-            </div>
-          </DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <DropdownMenuGroup>
+          <a href="/auth/login">
             <DropdownMenuItem>
-              <IconUserCircle />
-              Account
+              <LogOut />
+              Sair
             </DropdownMenuItem>
-            <DropdownMenuItem>
-              <IconCreditCard />
-              Billing
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <IconNotification />
-              Notifications
-            </DropdownMenuItem>
-          </DropdownMenuGroup>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem>
-            <IconLogout />
-            Log out
-          </DropdownMenuItem>
+          </a>
         </DropdownMenuContent>
       </DropdownMenu>
     </SidebarMenuItem>

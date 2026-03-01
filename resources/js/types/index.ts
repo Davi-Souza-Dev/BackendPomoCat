@@ -12,3 +12,22 @@ export type AppPageProps<
     sidebarOpen: boolean;
     [key: string]: unknown;
 };
+
+export interface Timer{
+    start: boolean,
+    min: number,
+    sec: number
+}
+
+export interface User{
+    username: string,
+    email: string,
+    photo: string
+}
+
+export interface Card{
+    id: number,
+    title: string,
+    image_url: string,
+    rarity: string,
+}
