@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import SectionCards from '@/components/SectionCards.vue';
-import AdminLayout from '@/layouts/AdminLayout.vue';
+import AdminLayout from '@/layout/AdminLayout.vue'
 </script>
 
 <template>

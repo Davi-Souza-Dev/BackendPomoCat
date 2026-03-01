@@ -21,9 +21,8 @@ import { toast, Toaster } from 'vue-sonner';
 const cardStore = useCardStore();
 
 import CardCat from '@/components/catalog/CardCat.vue';
-import AppLayout from '@/layouts/AppLayout.vue';
 import DialogCard from '@/components/catalog/DialogCard.vue';
-import AdminLayout from '@/layouts/AdminLayout.vue';
+import AdminLayout from '@/layout/AdminLayout.vue';
 interface Props {
     cards: CardType[];
 }
