@@ -49,7 +49,7 @@ const showCard = () => {
             </div>
             <div v-if="click == true">
               <div
-                class="w-35 h-50 bg-background-app rounded flex flex-col gap-1 justify-around align-middle items-center flip-fix"
+                class="w-35 h-50 bg-background-app rounded flex flex-col gap-1 justify-center align-middle items-center flip-fix"
               >
                 <img :src="timerStore.newCard.card.image_url" class="w-25" :class="`rarity-${timerStore.newCard.card.rarity}`"/>
                 <span class="text-l font-pixel uppercase text-center">

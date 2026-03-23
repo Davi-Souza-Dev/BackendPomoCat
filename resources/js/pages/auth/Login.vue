@@ -1,9 +1,8 @@
-<script lang="ts">
-export const description = "A simple login form."
-</script>
 
 <script setup lang="ts">
 import LoginForm from '@/components/auth/LoginForm.vue';
+import { usePage } from '@inertiajs/vue3';
+
 </script>
 
 <template>

@@ -7,7 +7,7 @@ import DialogConfig from './DialogConfig.vue'
 import { ref } from 'vue'
 import CentralIcon from './CentralIcon.vue'
 import UnlockCard from './UnlockCard.vue'
-import PlayerAudio from './PlayerAudio.vue'
+import PlayerAudio from '../audio/PlayerAudio.vue'
 const timerStore = useTimerStore()
 const showDialogConfig = ref(false)
 </script>

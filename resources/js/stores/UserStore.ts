@@ -1,6 +1,6 @@
 import api from '@/api';
 import type { User } from '@/types';
-import { useForm } from '@inertiajs/vue3';
+import { useForm, usePage } from '@inertiajs/vue3';
 import { defineStore } from 'pinia';
 
 interface UserState {
@@ -15,6 +15,9 @@ export const useUserStore = defineStore('UserStore', {
                 photo: '',
             },
         };
+    },
+    getters:{
+        authUser: () => usePage().props.auth.user
     },
     actions: {
         async loginForm(email: string, password: string) {

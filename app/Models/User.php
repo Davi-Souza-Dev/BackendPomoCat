@@ -56,4 +56,8 @@ class User extends Authenticatable
     public function cards(): HasMany{
         return $this->hasMany(UserCard::class,'user_id','id');
     }
+
+    public function focusSession(): HasMany{
+        return $this->hasMany(FocusSession::class,'user_id','id');
+    }
 }

@@ -17,8 +17,8 @@ export const useTimerStore = defineStore('TimerStore', {
   state: (): TimerState => {
     return {
       timer: {
-        min: 50,
-        sec: 0,
+        min: 0,
+        sec: 2,
         start: false,
       },
       minReal: 0,
@@ -84,7 +84,7 @@ export const useTimerStore = defineStore('TimerStore', {
       const formData = new FormData()
       formData.append('duration', this.minReal.toFixed())
       formData.append('status', status)
-      const response = await api.post(`/newfocus/${user.user.username}`, formData)
+      const response = await api.post(`/newfocus`, formData)
       clearInterval(this.interval)
       this.timer.start = false
       this.timer.min = this.minReal

@@ -14,6 +14,7 @@ class AuthController
 {
     public function loginForm()
     {
+        Auth::logout();
         return Inertia::render('auth/Login');
     }
 
@@ -27,7 +28,7 @@ class AuthController
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
-            return redirect()->route('pomodoro');
+            return redirect()->route('auth.loginForm');
         }
 
         return back()->withErrors([
