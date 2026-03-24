@@ -7,12 +7,12 @@ import {
     CardTitle,
 } from '@/components/ui/card';
 import Calendar from '../ui/calendar/Calendar.vue';
-import { ref } from 'vue';
-import { DateValue } from 'reka-ui';
-import { getLocalTimeZone, today } from '@internationalized/date';
+interface Props{
+    heatDates: string[]
+}
 
-const selectedDates = ref<DateValue[]>();
-const currentToday = today(getLocalTimeZone());
+const props = defineProps<Props>();
+
 </script>
 
 <template>
@@ -27,7 +27,7 @@ const currentToday = today(getLocalTimeZone());
             <div>
                 <Calendar
                     class="w-full"
-                    :heat-dates="['2026-03-24']"
+                    :heat-dates="props.heatDates"
                     layout="month-and-year"
                     locale="pt-BR"
                 />

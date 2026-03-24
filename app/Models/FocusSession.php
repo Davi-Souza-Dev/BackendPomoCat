@@ -18,7 +18,7 @@ class FocusSession extends Model
     ];
     /** @use HasFactory<\Database\Factories\FocusSessionFactory> */
     use HasFactory;
-    protected $casts = ['status' => FocusSessionStatus::class];
+    protected $casts = ['duration' => 'integer','status' => FocusSessionStatus::class] ;
 
     public function user(): BelongsTo
     {

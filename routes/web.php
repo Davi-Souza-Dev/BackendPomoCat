@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\App\AnalyticController;
 use App\Http\Controllers\App\CatalogController;
 use App\Http\Controllers\App\FocusSessionController;
 use App\Http\Controllers\AuthController;
@@ -15,7 +16,7 @@ Route::get('/', function () {
 
 
 Route::get('/pomodoro',[PomodoroController::class,'index'])->name('pomodoro');
-Route::get('/pomodoro/analytics',[PomodoroController::class,'analytics'])->name('pomodoro.analytic');
+Route::get('/pomodoro/analytics',[AnalyticController::class,'analytics'])->name('pomodoro.analytic');
 
 Route::get('/admin/dashboard', function () {
     return Inertia::render('admin/Dashboard', ['cards' => Card::all()]);

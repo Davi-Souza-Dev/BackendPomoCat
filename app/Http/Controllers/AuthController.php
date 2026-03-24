@@ -55,10 +55,11 @@ class AuthController
                     'photo' => $request->photo
                 ]);
 
+                Auth::login($user);
+
                 return redirect()->route('pomodoro');
             }
         } catch (Throwable $error) {
-            dd($error);
             return [
                 "error" => [
                     'title' => $error->getMessage(),
