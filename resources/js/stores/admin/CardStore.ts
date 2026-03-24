@@ -1,4 +1,4 @@
-import api from '@/api';
+import api from '@/apiadmin';
 import { CardType } from '@/types/types';
 import { defineStore } from 'pinia';
 
@@ -32,7 +32,6 @@ export const useCardStore = defineStore('CardStore', {
                     formData.append('imagem', this.file);
                 }
 
-                console.log(this.card);
                 const response = await api.post('/card/set', formData, {
                     headers: { 'Content-Type': 'multipart/form-data' },
                 });
@@ -51,7 +50,6 @@ export const useCardStore = defineStore('CardStore', {
                     id: cardId,
                 });
                 if (response.data.success) {
-                  console.log('deletado')
                     this.cards = this.cards.filter(
                         (card: CardType) => card.id != cardId,
                     );

@@ -5,6 +5,7 @@ export const description = "A dashboard with sidebar, data table, and analytics 
 
 <script setup lang="ts">
 import AppSidebar from "@/components/AppSidebar.vue"
+import AppSidebarDashboard from "@/components/AppSidebarDashboard.vue"
 import SiteHeader from "@/components/SiteHeader.vue"
 import {
   SidebarInset,
@@ -28,10 +29,10 @@ const props = defineProps<Props>();
       '--header-height': 'calc(var(--spacing) * 12)',
     }"
   >
-    <AppSidebar variant="inset" />
+    <AppSidebarDashboard variant="inset" />
     <SidebarInset>
       <SiteHeader :header="page"/>
-      <div class="flex flex-1 flex-col">
+      <div class="flex flex-1 flex-col dashboard-theme">
         <div class="@container/main flex flex-1 flex-col gap-2">
           <div class="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
             <slot/>

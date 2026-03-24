@@ -18,12 +18,12 @@ import { useUserStore } from '@/stores/UserStore'
 const items = [
   {
     title: 'Inicio',
-    url: '#',
+    url: '/pomodoro/',
     icon: Home,
   },
   {
-    title: 'Dados',
-    url: '#',
+    title: 'Análises',
+    url: '/pomodoro/analytics',
     icon: ChartLineIcon,
   },
 ]

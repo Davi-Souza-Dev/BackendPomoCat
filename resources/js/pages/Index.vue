@@ -5,16 +5,7 @@ import Timer from '@/components/pomodoro/Timer.vue'
 import AppLayout from '@/layout/AppLayout.vue'
 import { useTimerStore } from '@/stores/TimerStore'
 import { useUserStore } from '@/stores/UserStore'
-import { User } from '@/types'
-import { ref } from 'vue'
 const timerStore = useTimerStore()
-
-interface Props{
-  user: User
-}
-const props = defineProps<Props>();
-const userStore = useUserStore();
-userStore.user = props.user;
 </script>
 
 <template>
