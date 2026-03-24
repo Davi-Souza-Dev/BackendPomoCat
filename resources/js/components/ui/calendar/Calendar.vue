@@ -26,8 +26,10 @@ const isHeat = (date: DateValue) => {
     :class="cn('p-4 w-full border rounded-xl shadow-lg md:max-w-fit', props.class)"
     v-bind="forwarded"
   >
-    <CalendarHeader class="px-2 pb-4 justify-between flex">
-      <CalendarPrevButton class="md:h-10 md:w-10" /> <CalendarHeading class="md:text-xl font-bold uppercase" /> <CalendarNextButton class="md:h-10 md:w-10" />
+    <CalendarHeader class="px-2 pb-4 justify-center flex w-full items-center ">
+      <!-- <CalendarPrevButton class="md:h-10 md:w-10" />  -->
+      <CalendarHeading class="md:text-xl font-bold uppercase" /> 
+      <!-- <CalendarNextButton class="md:h-10 md:w-10" /> -->
     </CalendarHeader>
 
     <div class="flex flex-col gap-y-4 mt-2 sm:flex-row sm:gap-x-4 sm:gap-y-0">
@@ -36,7 +38,7 @@ const isHeat = (date: DateValue) => {
           <CalendarGridRow class="flex justify-between">
             <CalendarHeadCell
               v-for="day in weekDays" :key="day"
-              class="md:w-12 text-base font-medium text-muted-foreground uppercase"
+              class="md:w-full text-base font-medium text-muted-foreground uppercase"
             >
               {{ day }}
             </CalendarHeadCell>
@@ -47,13 +49,12 @@ const isHeat = (date: DateValue) => {
           <CalendarGridRow 
             v-for="(weekDates, index) in month.rows" 
             :key="`weekDate-${index}`" 
-            class="flex p-1 md:w-full md:mt-2 gap-1 gap-y-1"
+            class="flex p-1 md:w-full  gap-1 gap-y-1"
           >
             <CalendarCell
           v-for="weekDate in weekDates"
           :key="weekDate.toString()"
-          :date="weekDate"
-          class="relative p-0 text-center focus-within:relative aspect-square">
+          :date="weekDate">
           <CalendarCellTrigger
             :day="weekDate"
             :month="month.value"

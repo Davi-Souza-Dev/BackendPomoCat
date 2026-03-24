@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, onUpdated, ref, watch } from 'vue';
 import Chart from 'chart.js/auto';
 import {
     Card,
@@ -10,22 +10,16 @@ import {
 } from '@/components/ui/card';
 import Button from '../ui/button/Button.vue';
 import { ArrowLeft, ArrowRight } from 'lucide-vue-next';
-interface Props {
-    label: string[];
-    title: string;
-    desc: string;
-    data: number[];
-    total: number;
-}
-
-const props = defineProps<Props>();
+import { useGraphDist } from '@/stores/analytics/GraphDistFocus';
 const focusChartCanvas = ref<HTMLCanvasElement | null>(null);
-const weeklyFocusData = {
-    labels: props.label,
+const distGraphStore = useGraphDist();
+const weeklyFocusData = computed(() => ({
+    labels: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'],
     datasets: [
         {
             label: 'Minutos de Foco',
-            data: props.data, //MINUTOS
+            // O .value aqui é essencial se a store for reativa
+            data: distGraphStore.week.data,
             backgroundColor: 'rgba(249, 115, 22, 0.2)',
             borderColor: 'rgb(249, 115, 22)',
             borderWidth: 2,
@@ -33,13 +27,15 @@ const weeklyFocusData = {
             borderSkipped: false,
         },
     ],
-};
+}));
 
-onMounted(() => {
-    if (focusChartCanvas.value) {
-        new Chart(focusChartCanvas.value, {
+console.log(weeklyFocusData.value);
+let chartInstance: any = null;
+const initeChart = () =>{
+        if (focusChartCanvas.value) {
+        chartInstance = new Chart(focusChartCanvas.value, {
             type: 'bar',
-            data: weeklyFocusData,
+            data: weeklyFocusData.value,
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
@@ -73,21 +69,39 @@ onMounted(() => {
             },
         });
     }
+}
+
+onMounted(() => {
+    initeChart();
 });
+
+watch(() => distGraphStore.week.data, (newData) => {
+    if (chartInstance) {
+        chartInstance.data = weeklyFocusData.value;
+        chartInstance.update();
+    }
+}, { deep: true });
 </script>
 
 <template>
     <Card class="h-full w-full">
         <CardHeader>
-            <CardTitle>{{ props.title }}</CardTitle>
-            <CardDescription class="flex items-center justify-between">
-                <Button variant="ghost"><ArrowLeft /></Button> 
-                    {{ props.desc }}
-                <Button variant="ghost"><ArrowRight /></Button>
+            <CardTitle>Distribuição de foco</CardTitle>
+            <CardDescription class="flex items-center justify-center">
+                <Button variant="ghost" @click="distGraphStore.prevWeek"
+                    ><ArrowLeft
+                /></Button>
+                {{ distGraphStore.week.title }}
+                <Button variant="ghost" v-if="distGraphStore.offset > 0" @click="distGraphStore.nextweek"
+                    ><ArrowRight
+                /></Button>
             </CardDescription>
             <CardDescription>
                 Tempo total de foco:
-                <strong class="text-foreground">{{ props.total }}</strong> min
+                <strong class="text-foreground">{{
+                    distGraphStore.week.total
+                }}</strong>
+                min
             </CardDescription>
         </CardHeader>
         <CardContent>

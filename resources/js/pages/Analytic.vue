@@ -1,8 +1,9 @@
 <script lang="ts" setup>
 import Heatmap from '@/components/analytic/Heatmap.vue';
-import BarChart from '@/components/analytic/BarChart.vue';
+import DistGraph from '@/components/analytic/DistGraph.vue';
 import Streakbar from '@/components/analytic/Streakbar.vue';
 import AppLayout from '@/layout/AppLayout.vue';
+import { useGraphDist } from '@/stores/analytics/GraphDistFocus';
 
 interface Props{
     heatDates: string[],
@@ -14,6 +15,9 @@ interface Props{
 }
 
 const props = defineProps<Props>();
+const graphDistStore = useGraphDist();
+graphDistStore.week = props.week;
+
 </script>
 
 <template>
@@ -24,21 +28,7 @@ const props = defineProps<Props>();
                     <Heatmap :heat-dates="props.heatDates"/>
                 </div>
                 <div class="h-75 w-[350px] rounded-xl bg-primary md:w-full">
-                    <BarChart
-                        :desc="week.title"
-                        title="Analise de foco"
-                        :label="[
-                            'Dom',
-                            'Seg',
-                            'Ter',
-                            'Qua',
-                            'Qui',
-                            'Sex',
-                            'Sáb',
-                        ]",
-                        :data="props.week.data"
-                        :total="props.week.total"
-                    />
+                    <DistGraph/>
                 </div>
             </div>
         </div>

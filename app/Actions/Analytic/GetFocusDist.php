@@ -10,13 +10,13 @@ use Illuminate\Support\Facades\DB;
 
 class GetFocusDist
 {
-    public function execute(User $user)
+    public function execute(User $user,$offset)
     {
         date_default_timezone_set('UTC');
         date_default_timezone_set('America/Sao_Paulo');
         setlocale(LC_ALL, 'pt_BR', 'pt_BR.utf-8', 'pt_BR.utf-8', 'portuguese');
 
-        $actualWeek = Carbon::now()->subWeeks(0);
+        $actualWeek = Carbon::now()->subWeeks($offset);
         $startOfWeek = $actualWeek->copy()->startOfWeek(0)->format('Y-m-d');
         $endOfWeek = $actualWeek->copy()->endOfWeek(-1)->format('Y-m-d');
         $sessions = FocusSession::where('user_id', $user->id)
@@ -47,7 +47,6 @@ class GetFocusDist
             'title' => "$startWeekDay - $endWeekDay de $month. de $year",
             'data' => $chartData,
             'total' => $total,
-
         ];
 
     }

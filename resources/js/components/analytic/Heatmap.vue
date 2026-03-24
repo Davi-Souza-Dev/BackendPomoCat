@@ -19,9 +19,9 @@ const props = defineProps<Props>();
     <Card class="h-full w-full">
         <CardHeader>
             <CardTitle>Sequência de usos diários</CardTitle>
-            <CardDescription
+            <!-- <CardDescription
                 >Você mantem uma sequência de: 2 dias</CardDescription
-            >
+            > -->
         </CardHeader>
         <CardContent>
             <div>

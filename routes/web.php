@@ -16,7 +16,9 @@ Route::get('/', function () {
 
 
 Route::get('/pomodoro',[PomodoroController::class,'index'])->name('pomodoro');
-Route::get('/pomodoro/analytics',[AnalyticController::class,'analytics'])->name('pomodoro.analytic');
+Route::get('/pomodoro/analytics',[AnalyticController::class,'index'])->name('pomodoro.analytic');
+Route::post("pomodoro/analytic/dist/prevweek",[AnalyticController::class,'distgraph']);
+Route::post("pomodoro/analytic/dist/nextweek",[AnalyticController::class,'distgraph']);
 
 Route::get('/admin/dashboard', function () {
     return Inertia::render('admin/Dashboard', ['cards' => Card::all()]);
