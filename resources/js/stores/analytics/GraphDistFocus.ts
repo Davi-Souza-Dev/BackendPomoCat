@@ -35,7 +35,6 @@ export const useGraphDist = defineStore('useGraphDist', {
             const response = await api.post(`/analytic/dist/nextweek`, {
                 offsetweek: this.offset,
             });
-
             this.week = response.data;
         },
     },
