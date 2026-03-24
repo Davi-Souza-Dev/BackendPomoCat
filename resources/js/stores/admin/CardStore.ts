@@ -14,7 +14,7 @@ export const useCardStore = defineStore('CardStore', {
             card: {
                 id: 0,
                 image_url: '',
-                rarity: '',
+                rarity: 'common',
                 title: '',
             },
             file: null,
@@ -84,7 +84,7 @@ export const useCardStore = defineStore('CardStore', {
                 return error('Escolha a raridade.');
             }
 
-            if (this.file == null && this.card.rarity.trim() === '') {
+            if (this.file == null) {
                 return error('Precisa de uma imagem!');
             }
             return true;
