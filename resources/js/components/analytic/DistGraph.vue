@@ -29,7 +29,6 @@ const weeklyFocusData = computed(() => ({
     ],
 }));
 
-console.log(weeklyFocusData.value);
 let chartInstance: any = null;
 const initeChart = () =>{
         if (focusChartCanvas.value) {
