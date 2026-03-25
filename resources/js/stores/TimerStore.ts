@@ -17,8 +17,8 @@ export const useTimerStore = defineStore('TimerStore', {
   state: (): TimerState => {
     return {
       timer: {
-        min: 1,
-        sec: 0,
+        min: 0,
+        sec: 2,
         start: false,
       },
       minReal: 0,

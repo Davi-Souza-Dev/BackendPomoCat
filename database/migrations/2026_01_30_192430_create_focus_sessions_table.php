@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete()->cascadeOnUpdate();
             $table->integer('duration');
             $table->string('status');
-            $table->string('date');
+            $table->date('date');
             $table->timestamps();
         });
     }
