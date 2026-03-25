@@ -14,7 +14,7 @@ class CreateFocusSessions
         $newFocus = $user->focusSession()->create([
             'duration' => $data['duration'],
             'status' => $data['status'],
-            'date' => today(),
+            'date' => date('Y-m-d'),
         ]);
 
         if($newFocus && $data['status'] == FocusSessionStatus::COMPLETED->value){

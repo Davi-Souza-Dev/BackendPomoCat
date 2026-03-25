@@ -17,7 +17,7 @@ export const useTimerStore = defineStore('TimerStore', {
   state: (): TimerState => {
     return {
       timer: {
-        min: 50,
+        min: 1,
         sec: 0,
         start: false,
       },
@@ -65,7 +65,7 @@ export const useTimerStore = defineStore('TimerStore', {
           this.progress = Math.floor((tempoDecorrido / totalSecs) * 100)
         }, 1000)
       } else {
-        this.saveFocus('interruped')
+        this.saveFocus('interrupted')
       }
     },
     playAudio() {

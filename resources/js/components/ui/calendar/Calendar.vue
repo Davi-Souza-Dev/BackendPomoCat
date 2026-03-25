@@ -23,7 +23,7 @@ const isHeat = (date: DateValue) => {
 <template>
   <CalendarRoot
     v-slot="{ grid, weekDays }"
-    :class="cn('p-4 w-full border rounded-xl shadow-lg md:max-w-fit', props.class)"
+    :class="cn('p-4 w-full border rounded-xl shadow-lg md:max-w-full', props.class)"
     v-bind="forwarded"
   >
     <CalendarHeader class="px-2 pb-4 justify-center flex w-full items-center ">
@@ -60,7 +60,7 @@ const isHeat = (date: DateValue) => {
             :month="month.value"
             :class="cn(
               'h-full w-full flex flex-col items-center justify-center gap-1 rounded-md text-lg transition-none relative',
-              'focus:bg-transparent  gap-1 p-1', 
+              'focus:bg-transparent  gap-1 p-1 aspect-square', 
               isHeat(weekDate) && 'text-primary bg-foreground'
             )"
           >
