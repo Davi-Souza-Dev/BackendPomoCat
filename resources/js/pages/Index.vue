@@ -6,12 +6,19 @@ import AppLayout from '@/layout/AppLayout.vue'
 import { useTimerStore } from '@/stores/TimerStore'
 import { useUserStore } from '@/stores/UserStore'
 const timerStore = useTimerStore()
+
+interface Props{
+  todayfocus: number;
+}
+
+const props = defineProps<Props>();
+const userStore = useUserStore();
+userStore.todayfocus = props.todayfocus;
 </script>
 
 <template>
   <AppLayout>
-    <DialogCatalog/>
-    <!-- <h1 class="font-extrabold" v-show="timerStore.timer.start == false">0 gatos descobertos hoje</h1> -->
+    <h1 class="font-extrabold" v-show="timerStore.timer.start == false">{{ userStore.todayfocus }} min de foco hoje!</h1>
     <Timer/>
   </AppLayout>
 </template>

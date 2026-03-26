@@ -10,15 +10,15 @@ class CreateFocusSessions
 {
     public function execute(User $user, array $data)
     {
+        date_default_timezone_set('America/Sao_Paulo');
         $giveCardToUser = new GiveCardToUser;
         $newFocus = $user->focusSession()->create([
             'duration' => $data['duration'],
             'status' => $data['status'],
             'date' => date('Y-m-d'),
-            // 'date' => today(),
         ]);
 
-        if($newFocus && $data['status'] == FocusSessionStatus::COMPLETED->value){
+        if ($newFocus && $data['status'] == FocusSessionStatus::COMPLETED->value) {
             return $giveCardToUser->execute($user);
         }
     }

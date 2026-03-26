@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\App;
 
+use App\Actions\Analytic\GetTodayFocus;
 use App\Actions\Pomodoro\CreateFocusSessions;
 use Exception;
 use Illuminate\Http\Request;
@@ -10,7 +11,7 @@ use Throwable;
 
 class FocusSessionController extends Controller
 {
-    public function newFocus(Request $request, CreateFocusSessions $createFocusSessions)
+    public function newFocus(Request $request, CreateFocusSessions $createFocusSessions,GetTodayFocus $getTodayFocus)
     {
 
         try {
@@ -31,6 +32,7 @@ class FocusSessionController extends Controller
 
             return response()->json(['success' => [
                 'card' => $card,
+                'todayfocus' => $getTodayFocus->execute($user),
             ]], 200);
 
         } catch (Throwable $error) {

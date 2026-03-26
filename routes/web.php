@@ -19,6 +19,14 @@ Route::get('/pomodoro',[PomodoroController::class,'index'])->name('pomodoro');
 Route::get('/pomodoro/analytics',[AnalyticController::class,'index'])->name('pomodoro.analytic');
 Route::post("pomodoro/analytic/dist/prevweek",[AnalyticController::class,'distgraph']);
 Route::post("pomodoro/analytic/dist/nextweek",[AnalyticController::class,'distgraph']);
+Route::middleware('auth')->group(function () {
+    Route::prefix('pomodoro')->group(function () {
+        Route::get('/', [PomodoroController::class, 'index'])->name('pomodoro');
+        Route::get('/getcatalog', [CatalogController::class, 'getCatalog']);
+        Route::post('/newfocus', [FocusSessionController::class, 'newFocus']);
+    });
+});
+
 
 Route::get('/admin/dashboard', function () {
     return Inertia::render('admin/Dashboard', ['cards' => Card::all()]);
@@ -27,15 +35,6 @@ Route::get('/admin/dashboard', function () {
 // CARDS
 Route::post('admin/card/set', [CardController::class, "setCard"])->name('card.set');
 Route::post('admin/card/delete', [CardController::class, "delete"])->name('card.delete');
-
-
-Route::middleware('auth')->group(function () {
-    Route::prefix('pomodoro')->group(function () {
-        Route::get('/', [PomodoroController::class, 'index'])->name('pomodoro');
-        Route::get('/getcatalog', [CatalogController::class, 'getCatalog']);
-        Route::post('/newfocus', [FocusSessionController::class, 'newFocus']);
-    });
-});
 
 // AUTH
 Route::get('auth/login', [AuthController::class, 'loginForm'])->name('auth.loginForm');

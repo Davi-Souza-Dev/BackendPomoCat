@@ -5,6 +5,7 @@ import { defineStore } from 'pinia';
 
 interface UserState {
     user: User;
+    todayfocus: number,
 }
 export const useUserStore = defineStore('UserStore', {
     state: (): UserState => {
@@ -14,6 +15,7 @@ export const useUserStore = defineStore('UserStore', {
                 email: '',
                 photo: '',
             },
+            todayfocus: 0,
         };
     },
     getters:{
