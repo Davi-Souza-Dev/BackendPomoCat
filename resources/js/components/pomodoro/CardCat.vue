@@ -5,8 +5,8 @@ interface Props {
   image: string
   rarity: string
 }
-
 const props = defineProps<Props>()
+  console.log(props.rarity);
 </script>
 
 <template>
@@ -26,23 +26,27 @@ const props = defineProps<Props>()
 }
 
 /* Comum */
-.rarity-comum {
+.rarity-common {
   filter: drop-shadow(0 0 8px #9ca3af);
 }
 
+.rarity-common {
+  filter: drop-shadow(0 0 12px rgb(255, 255, 255));
+}
+
 /* Raro */
-.rarity-raro {
+.rarity-rare {
   filter: drop-shadow(0 0 12px #3b82f6);
 }
 
 /* Épico */
-.rarity-epíco {
+.rarity-epic {
   filter: drop-shadow(0 0 15px #a855f7);
   animation: pulse-rarity 2s infinite;
 }
 
 /* Lendário */
-.rarity-lendário {
+.rarity-legendary {
   filter: drop-shadow(0 0 20px #f59e0b) drop-shadow(0 0 35px #fbbf24);
   animation: shine-gold 3s infinite;
 }
