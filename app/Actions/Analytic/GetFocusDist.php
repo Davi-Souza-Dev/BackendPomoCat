@@ -11,9 +11,8 @@ use Illuminate\Support\Facades\DB;
 
 class GetFocusDist
 {
-    public function execute(User $user,$offset)
+    public function execute(User $user, int $offset = 0)
     {
-        date_default_timezone_set('America/Sao_Paulo');
         $actualWeek = Carbon::now()->subWeeks($offset);
         $startOfWeek = $actualWeek->copy()->startOfWeek(0)->format('Y-m-d');
         $endOfWeek = $actualWeek->copy()->endOfWeek(-1)->format('Y-m-d');

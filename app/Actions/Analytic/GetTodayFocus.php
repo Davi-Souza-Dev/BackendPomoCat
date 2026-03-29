@@ -12,7 +12,6 @@ class GetTodayFocus
 {
     public function execute(User $user)
     {
-        date_default_timezone_set('UTC');
         $actualDay = date('Y-m-d');
         $todayfocus = FocusSession::where('user_id', $user->id)
             ->where('status', FocusSessionStatus::COMPLETED)

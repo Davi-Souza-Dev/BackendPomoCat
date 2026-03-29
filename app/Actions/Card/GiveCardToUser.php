@@ -23,6 +23,7 @@ class GiveCardToUser{
                 $selectedCard = $card;
             }
         }
+        
         return $selectedCard;
     }
 }

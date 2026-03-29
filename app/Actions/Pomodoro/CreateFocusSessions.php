@@ -8,18 +8,22 @@ use App\Models\User;
 
 class CreateFocusSessions
 {
+
+    public function __construct(
+        private readonly GiveCardToUser $giveCardToUser
+    ) {}
+
     public function execute(User $user, array $data)
     {
-        date_default_timezone_set('America/Sao_Paulo');
-        $giveCardToUser = new GiveCardToUser;
-        $newFocus = $user->focusSession()->create([
+
+    $newFocus = $user->focusSession()->create([
             'duration' => $data['duration'],
             'status' => $data['status'],
-            'date' => date('Y-m-d'),
+            'date' => now()->toDateString(),
         ]);
 
         if ($newFocus && $data['status'] == FocusSessionStatus::COMPLETED->value) {
-            return $giveCardToUser->execute($user);
+            return $this->giveCardToUser->execute($user);
         }
     }
 }

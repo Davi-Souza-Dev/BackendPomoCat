@@ -17,7 +17,6 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete()->cascadeOnUpdate();
             $table->unsignedBigInteger('card_id');
             $table->foreign('card_id')->references('id')->on('cards')->cascadeOnDelete()->cascadeOnUpdate();
-            // $table->timestamp('unclock_at');
             $table->timestamps();
         });
     }

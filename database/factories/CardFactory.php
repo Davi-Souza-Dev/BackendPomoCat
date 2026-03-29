@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\CardRarity;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +18,9 @@ class CardFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'title' => fake()->words(2, true),
+            'rarity' => $this->faker->randomElement(['commun','uncommun','rare','epic','legendary']),
+            'image'  => fake()->imageUrl(640, 480, 'cards', true),
         ];
     }
 }

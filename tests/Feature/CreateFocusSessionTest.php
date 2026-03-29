@@ -1,23 +1,46 @@
 <?php
 
+use App\Actions\Card\GiveCardToUser;
 use App\Actions\Pomodoro\CreateFocusSessions;
+use App\Enums\FocusSessionStatus;
 use App\Models\Card;
 use App\Models\User;
 
-test('cria session de foco', function () {
-    // Etapa 1 - Preparação
-    $createFocusSession = new CreateFocusSessions();
+// TESTES MODELO AAA
+it('persiste a sessão de foco no banco', function () {
+
+    //Arange 
     $user = User::factory()->create();
     Card::factory()->create(['title' => 'Comum', 'image' => 'teste.php', 'rarity' => 'commun']);
-    $data = [
-        "duration" => 50,
-        "status" =>  "completed",
-    ];
+    $today = now()->toDateString();
 
-    // Etapa 2 - Agir
-    $cardColected = $createFocusSession->execute($user, $data);
-    expect($cardColected)->toBeInstanceOf(Card::class);
-    
-    // Etapa 3 - Assert
-    $this->assertEquals(Card::class);
+
+    // ACT
+    $action = new CreateFocusSessions(new GiveCardToUser);
+    $action->execute($user, [
+        'duration' => 25,
+        'status'   => FocusSessionStatus::COMPLETED->value,
+    ]);
+
+    // ASSERT
+    $this->assertDatabaseHas('focus_sessions', [
+        'user_id'  => $user->id,
+        'duration' => 25,
+        'status'   => FocusSessionStatus::COMPLETED->value,
+        'date' => $today
+    ]);
+});
+
+it('apenas uma sessão por chamada', function () {
+    $user = User::factory()->create();
+    Card::factory()->create(['title' => 'Comum', 'image' => 'teste.php', 'rarity' => 'commun']);
+
+    $action = new CreateFocusSessions(new GiveCardToUser);
+
+    $action->execute($user, [
+        'duration' => 25,
+        'status'   => FocusSessionStatus::COMPLETED->value,
+    ]);
+
+    $this->assertDatabaseCount('focus_sessions', 1);
 });

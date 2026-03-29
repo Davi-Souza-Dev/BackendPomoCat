@@ -22,16 +22,20 @@ class CatalogController
     public function getCatalog(Request $request)
     {
         try {
-            $orderRarity = implode(' ',CardRarity::values());
-            $cards = Card::orderByRaw("FIELD(rarity, '$orderRarity') ASC")->get();
+            $rarities    = CardRarity::values();
+            $placeholders = implode(',', array_fill(0, count($rarities), '?'));
+
+            $cards = Card::orderByRaw(
+                "FIELD(rarity, $placeholders)",
+                $rarities                          // Laravel faz o binding seguro
+            )->get();
+
             return [
                 "cards" => CardResource::collection($cards),
-                "total" => Card::count(),
+                "total" =>  $cards->count(),
             ];
-            
         } catch (Throwable $error) {
             throw new Exception($error->getMessage());
         }
     }
-
 }

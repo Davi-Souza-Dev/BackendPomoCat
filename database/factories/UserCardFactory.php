@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Card;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,9 +19,8 @@ class UserCardFactory extends Factory
     public function definition(): array
     {
         return [
-            "user_id" => 2,
-            "card_id" => 4,
-            "unlock_at" => 123132131
+            "user_id" => $this->faker->randomElement(User::all()->pluck('id')),
+            "card_id" => $this->faker->randomElement(Card::all()->pluck('id')),
         ];
     }
 }

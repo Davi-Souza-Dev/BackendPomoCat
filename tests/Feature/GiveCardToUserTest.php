@@ -8,7 +8,6 @@ it('da uma carta para o usuario', function () {
     $user = User::factory()->create();
     
     Card::factory()->create(['title' => 'Comum','image'=>'teste.php','rarity'=>'commun']);
-    $raro = Card::factory()->create(['title' => 'Lendário','image'=>'teste.php','rarity'=>'rare']);
 
     $action = new GiveCardToUser();
 

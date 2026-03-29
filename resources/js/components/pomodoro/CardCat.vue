@@ -13,7 +13,7 @@ const props = defineProps<Props>()
   <div
     class="w-27 h-35 bg-background-app rounded flex flex-col gap-1 justify-around align-middle items-center"
   >
-    <span class="text-l font-pixel uppercase"> #{{ String(index).padStart(3, '0') }} </span>
+    <span class="text-l font-pixel uppercase"> #{{ String(index + 1).padStart(3, '0')}} </span>
     <img :src="image" class="w-20" :class="`rarity-${rarity}`" />
     <span class="text-l font-pixel uppercase text-center"> {{ title }}</span>
   </div>
@@ -25,7 +25,6 @@ const props = defineProps<Props>()
   padding: 10px
 }
 
-/* Comum */
 .rarity-common {
   filter: drop-shadow(0 0 8px #9ca3af);
 }
@@ -34,18 +33,18 @@ const props = defineProps<Props>()
   filter: drop-shadow(0 0 12px rgb(255, 255, 255));
 }
 
-/* Raro */
+
 .rarity-rare {
   filter: drop-shadow(0 0 12px #3b82f6);
 }
 
-/* Épico */
+
 .rarity-epic {
   filter: drop-shadow(0 0 15px #a855f7);
   animation: pulse-rarity 2s infinite;
 }
 
-/* Lendário */
+
 .rarity-legendary {
   filter: drop-shadow(0 0 20px #f59e0b) drop-shadow(0 0 35px #fbbf24);
   animation: shine-gold 3s infinite;

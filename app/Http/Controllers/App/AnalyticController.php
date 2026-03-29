@@ -18,7 +18,6 @@ class AnalyticController extends Controller
             $user = Auth::user();
             return Inertia::render('Analytic', ['heatDates' => $getHeatmap->execute($user), 'week' => $getFocusDist->execute($user,0)]);
         } catch (Throwable $error) {
-            dd($error);
             return redirect()->route('auth.loginForm');
         }
     }

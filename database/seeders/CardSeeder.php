@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Card;
+use Database\Factories\CardFactory;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -13,33 +15,35 @@ class CardSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table("cards")->insert([
-            [
-                "image" => "frajola.png",
-                "rarity" => "comum",
-                "title" => "Frajola"
-            ],
-            [
-                "image" => "laranja.png",
-                "rarity" => "comum",
-                "title" => "Laranja"
-            ],
-            [
-                "image" => "siames.png",
-                "rarity" => "raro",
-                "title" => "Siâmes"
-            ],
-            [
-                "image" => "mago.png",
-                "rarity" => "epíco",
-                "title" => "Gato Mago"
-            ],
-            [
-                "image" => "kittytros.png",
-                "rarity" => "lendário",
-                "title" => "Kittytros"
-            ],
+        // DB::table("cards")->insert([
+        //     [
+        //         "image" => "frajola.png",
+        //         "rarity" => "comum",
+        //         "title" => "Frajola"
+        //     ],
+        //     [
+        //         "image" => "laranja.png",
+        //         "rarity" => "comum",
+        //         "title" => "Laranja"
+        //     ],
+        //     [
+        //         "image" => "siames.png",
+        //         "rarity" => "raro",
+        //         "title" => "Siâmes"
+        //     ],
+        //     [
+        //         "image" => "mago.png",
+        //         "rarity" => "epíco",
+        //         "title" => "Gato Mago"
+        //     ],
+        //     [
+        //         "image" => "kittytros.png",
+        //         "rarity" => "lendário",
+        //         "title" => "Kittytros"
+        //     ],
 
-        ]);
+        // ]);
+
+        Card::factory(50)->create();
     }
 }

@@ -24,10 +24,10 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            'username' => "Davi",
-            'email' => 'teste@gmail.com',
-            'admin' => true,
-            'password' => static::$password ??= Hash::make('senha'),
+            'username' => fake()->unique()->userName(),
+            'email'    => fake()->unique()->safeEmail(),
+            'password' => Hash::make('password'),
+            'admin'    => false,
         ];
     }
 
@@ -36,9 +36,14 @@ class UserFactory extends Factory
      */
     public function unverified(): static
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state(fn(array $attributes) => [
             'email_verified_at' => null,
         ]);
+    }
+
+    public function admin(): static
+    {
+        return $this->state(['admin' => true]);
     }
 
     /**
@@ -46,7 +51,7 @@ class UserFactory extends Factory
      */
     public function withTwoFactor(): static
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state(fn(array $attributes) => [
             'two_factor_secret' => encrypt('secret'),
             'two_factor_recovery_codes' => encrypt(json_encode(['recovery-code-1'])),
             'two_factor_confirmed_at' => now(),
