@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\App;
 
 use App\Http\Requests\Audio\FormAudioRequest;
+use App\Models\Audio;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Throwable;
 
 class AudioController extends Controller
@@ -17,10 +19,25 @@ class AudioController extends Controller
                 throw new Exception('Sem arquivo de audio!');
             }
 
-            $path = $request->file('file')->store('audio','public');
-
+            $path = $request->file('file')->store('audio', 'public');
+            Audio::create([
+                'title' => $request->title,
+                'path' => basename($path),
+                'user_id' => Auth::user()->id,
+            ]);
         } catch (Throwable $error) {
-            dd($error->getMessage());
+            throw new Exception($error->getMessage());
+        }
+    }
+
+    public function getPlaylist()
+    {
+        try {
+            $user = Auth::user();
+            $playlist = Audio::where('user_id', $user->id)->select('title', 'path')->limit(20)->get();
+            return response()->json($playlist);
+        } catch (Throwable $error) {
+            throw new Exception($error->getMessage());
         }
     }
 }

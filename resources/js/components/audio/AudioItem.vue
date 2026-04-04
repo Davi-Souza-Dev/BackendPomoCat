@@ -1,14 +1,22 @@
 <script lang="ts" setup>
 import { Trash2 } from 'lucide-vue-next';
 import Button from '../ui/button/Button.vue';
+import { Audio } from '@/types';
+import { ref } from 'vue';
 
-const active = true;
+interface Props {
+    audio: Audio;
+}
+const props = defineProps<Props>();
+    const emits = defineEmits(['play'])
+
 </script>
 
 <template>
     <div
         class="flex w-full items-start gap-3 rounded-lg border border-primary/60 bg-background-app/50 px-4 py-3 shadow-lg hover:border-2 hover:border-foreground"
-    >
+        @click="emits('play')"
+        >
         <div
             class="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-lg bg-[#5c3a2a]"
         >
@@ -23,21 +31,17 @@ const active = true;
                 />
             </svg>
         </div>
-        <div class="flex w-full flex-col">
+        <div
+            class="flex w-full flex-col items-center justify-center align-middle"
+        >
             <div class="flex w-full items-center justify-between align-middle">
                 <span
-                    class="text-sm leading-tight font-semibold text-foreground"
-                    >Midnight Coffee</span
+                    class="flex items-center justify-center align-middle text-sm leading-tight font-semibold text-foreground capitalize"
+                    >{{ props.audio.title }}</span
                 >
                 <Button variant="ghost" class="stroke-red-300"
                     ><Trash2 />
                 </Button>
-            </div>
-            <div
-                class="relative h-1.5 w-full rounded-full bg-background-app/60"
-                v-if="active"
-            >
-                <div class="h-full w-[40%] rounded-full bg-foreground"></div>
             </div>
         </div>
     </div>

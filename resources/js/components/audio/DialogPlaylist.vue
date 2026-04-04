@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import {
     Sheet,
@@ -20,12 +19,53 @@ const playlistStore = usePlaylistStore();
 import DialogAddAudio from './DialogAddAudio.vue';
 import { useDialogAudio } from '@/stores/audio/DialogUplaodAudio';
 import AlertUpload from './AlertUpload.vue';
+import { onMounted, ref } from 'vue';
+import { Audio } from '@/types';
+import Input from '../ui/input/Input.vue';
 const dialogAudio = useDialogAudio();
+onMounted(() => {
+    playlistStore.getPlaylist();
+});
+
+let sound: Howl | null = null;
+let progressInterval: ReturnType<typeof setInterval> | null = null;
+const duration = ref(0);
+const currentTime = ref(0);
+const isPlaying = ref(false);
+
+const handleAudio = (audio: Audio) => {
+    sound = new Howl({
+        src: audio.path ?? '',
+        format: ['mp3'],
+        html5: true,
+        onload() {
+            duration.value = sound?.duration() ?? 0;
+        },
+        onend() {
+            isPlaying.value = false;
+            currentTime.value = 0;
+        },
+    });
+};
+const togglePlay = () => {
+    if (!sound) return;
+
+    if (isPlaying.value) {
+        sound.pause();
+        isPlaying.value = false;
+    } else {
+        sound.play();
+        isPlaying.value = true;
+        progressInterval = setInterval(() => {
+            currentTime.value = (sound?.seek() as number) ?? 0;
+        }, 100);
+    }
+};
 </script>
 
 <template>
-    <DialogAddAudio/>
-    <AlertUpload/>
+    <DialogAddAudio />
+    <AlertUpload />
     <Sheet
         v-model:open="playlistStore.active"
         @update:open="
@@ -42,7 +82,12 @@ const dialogAudio = useDialogAudio();
             <div
                 class="grid flex-1 auto-rows-min gap-6 overflow-y-auto px-4 pb-50"
             >
-                <AudioItem v-for="(item, index) in 5" :key="index" />
+                <AudioItem
+                    v-for="(audio, index) in playlistStore.playlist"
+                    :key="index"
+                    :audio="audio"
+                    @play="handleAudio(audio)"
+                />
             </div>
 
             <SheetFooter class="absolute bottom-0 w-full rounded-t-lg bg-card">
@@ -51,10 +96,14 @@ const dialogAudio = useDialogAudio();
                         <div
                             class="relative h-1.5 w-full overflow-hidden rounded-full bg-foreground"
                         >
-                            <div
-                                class="absolute h-full bg-primary transition-all duration-300"
-                                :style="{ width: `${90}%` }"
-                            ></div>
+                            <Input
+                                type="range"
+                                :min="0"
+                                :max="duration"
+                                step="0.1"
+                                :value="currentTime"
+                                class="w-full cursor-pointer accent-primary"
+                            />
                         </div>
                     </div>
 
@@ -71,7 +120,7 @@ const dialogAudio = useDialogAudio();
                             class="h-10 flex-1 rounded-xl bg-foreground transition-transform hover:bg-primary active:scale-95"
                         >
                             <component
-                                :is="true ? Pause : Play"
+                                :is="isPlaying ? Pause : Play"
                                 class="h-6 w-6 fill-background"
                             />
                         </Button>
@@ -85,7 +134,14 @@ const dialogAudio = useDialogAudio();
                         </Button>
                     </div>
                 </div>
-                <Button @click="playlistStore.toggleDialog(),dialogAudio.toggleDialog()"> <PlusSquare /> Adicionar Música </Button>
+                <Button
+                    @click="
+                        (playlistStore.toggleDialog(),
+                        dialogAudio.toggleDialog())
+                    "
+                >
+                    <PlusSquare /> Adicionar Música
+                </Button>
             </SheetFooter>
         </SheetContent>
     </Sheet>

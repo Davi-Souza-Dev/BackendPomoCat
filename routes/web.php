@@ -30,6 +30,7 @@ Route::middleware('auth')->group(function () {
 
     Route::prefix('audio')->group(function(){
         Route::post('/setaudio',[AudioController::class,'setAudio'])->name('audio.set');
+        Route::get('/getplaylist',[AudioController::class,'getPlaylist'])->name('audio.getPlaylist');
     });
 });
 
