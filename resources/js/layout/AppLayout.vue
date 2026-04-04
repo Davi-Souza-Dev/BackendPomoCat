@@ -4,11 +4,15 @@ import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import DialogCatalog from '@/components/pomodoro/DialogCatalog.vue';
 import Button from '@/components/ui/button/Button.vue';
 import { useTimerStore } from '@/stores/TimerStore';
-import { LucideBookOpen, MenuIcon } from 'lucide-vue-next';
+import { LucideBookOpen, MenuIcon, Music4Icon } from 'lucide-vue-next';
 import { ref } from 'vue';
 import { useCardStore } from '@/stores/admin/CardStore';
 import { useCatalogStore } from '@/stores/CatalogStore';
 import Loading from '@/components/pomodoro/Loading.vue';
+import DialogPlaylist from '@/components/audio/DialogPlaylist.vue';
+import { usePlayerStore } from '@/stores/PlayerStore';
+import { usePlaylistStore } from '@/stores/audio/PlaylistStore';
+import PlayerAudio from '@/components/audio/PlayerAudio.vue';
 
 const timerStore = useTimerStore();
 const catalogStore = useCatalogStore();
@@ -18,6 +22,9 @@ const showCatalog = async () => {
     await catalogStore.showCatalog();
     loading.value = !loading.value;
 };
+
+// PLAYLIST
+const playlistStore = usePlaylistStore();
 </script>
 
 <template>
@@ -32,19 +39,31 @@ const showCatalog = async () => {
                     /></Button>
                 </SidebarTrigger>
 
-                <Button
-                    @click="showCatalog()"
-                    class="h-10 w-10 border-2 border-primary-foreground"
-                    v-if="!timerStore.timer.start"
-                >
-                    <LucideBookOpen />
-                </Button>
+                <div class="flex w-fit h-10 gap-5 align-middle justify-center items-start">
+                    <div class="flex flex-col justify-center items-end align-center gap-1 ">
+                        <Button
+                            class="h-10 w-10 border-2 border-primary-foreground"
+                            @click="playlistStore.toggleDialog"
+                        >
+                            <Music4Icon />
+                        </Button>
+                        <PlayerAudio/>
+                    </div>
+                    <Button
+                        @click="showCatalog()"
+                        class="h-10 w-10 border-2 border-primary-foreground"
+                        v-if="!timerStore.timer.start"
+                    >
+                        <LucideBookOpen />
+                    </Button>
+                </div>
             </header>
 
             <section
                 class="flex w-full flex-1 flex-col items-center justify-center gap-5"
             >
                 <DialogCatalog />
+                <DialogPlaylist />
                 <slot />
             </section>
         </main>

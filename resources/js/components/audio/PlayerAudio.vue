@@ -4,53 +4,11 @@ import { Play, Pause, SkipBack, SkipForward, RotateCcw } from 'lucide-vue-next';
 import { Button } from '@/components/ui/button';
 const isPlaying = ref(false);
 const progress = ref(10);
-
-import videojs from 'video.js';
-import 'videojs-youtube';
-import 'video.js/dist/video-js.css';
-const videoPlayer = ref<HTMLAudioElement | string>('');
-let player: any = null;
-
-const videoOptions = {
-    techOrder: ['youtube'],
-    options: {
-        audioOnlyMode: true,
-        controls: false,
-        loop: true,
-    },
-    sources: [
-        {
-            type: 'video/youtube',
-            src: 'https://www.youtube.com/watch?v=BTST5HyO8gs&list=WL&index=4&t=2739s',
-        },
-    ],
-    // youtube: { customVars: { wmode: 'transparent' } },
-};
-
-onMounted(() => {
-    player = videojs(videoPlayer.value, videoOptions, () => {
-        console.log('Player pronto!');
-    });
-    player.ready(()=>{
-      player.play()
-    });
-    player.on('timeupdate', () => {
-        const currentTime = player.currentTime();
-        const duration = player.duration(); 
-        console.log(progress);
-    });
-});
-
-const togglePlay = () => {
-    console.log(player);
-    player.play();
-    isPlaying.value = !isPlaying.value;
-};
 </script>
 
 <template>
     <div
-        class="border-fore flex w-full max-w-100 items-center gap-5 rounded-sm border bg-background-dialog p-4 text-white shadow-2xl"
+        class="border-fore hidden w-60 items-center gap-5 rounded-sm border bg-background-dialog p-4 text-white shadow-2xl md:flex"
     >
         <!-- <div class="relative shrink-0">
       <img 
@@ -80,13 +38,12 @@ const togglePlay = () => {
                 <Button
                     variant="secondary"
                     size="icon"
-                    class="h-9 w-12 rounded-xl bg-zinc-800/80 hover:bg-zinc-700"
+                    class="h-9 w-12 rounded-xl bg-primary/80 hover:bg-primary"
                 >
                     <SkipBack class="h-5 w-5 fill-white" />
                 </Button>
 
                 <Button
-                    @click="togglePlay"
                     class="h-10 flex-1 rounded-xl bg-foreground transition-transform active:scale-95"
                 >
                     <component
@@ -98,26 +55,19 @@ const togglePlay = () => {
                 <Button
                     variant="secondary"
                     size="icon"
-                    class="h-9 w-12 rounded-xl bg-zinc-800/80 hover:bg-zinc-700"
+                    class="h-9 w-12 rounded-xl bg-primary/80 hover:bg-primary"
                 >
                     <SkipForward class="h-5 w-5 fill-white" />
                 </Button>
-
-                <Button
+                <!-- <Button
                     variant="ghost"
                     size="icon"
                     class="h-9 w-9 text-zinc-500 hover:text-white"
                 >
                     <RotateCcw class="h-4 w-4" />
-                </Button>
+                </Button> -->
             </div>
         </div>
-    </div>
-    <div class="hidden">
-        <audio
-            ref="videoPlayer"
-            class="video-js vjs-big-play-centered vjs-theme-city hidden"
-        ></audio>
     </div>
 </template>
 

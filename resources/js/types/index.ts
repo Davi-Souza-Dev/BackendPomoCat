@@ -13,6 +13,8 @@ export type AppPageProps<
     [key: string]: unknown;
 };
 
+// APP
+
 export interface Timer{
     start: boolean,
     min: number,
@@ -30,4 +32,10 @@ export interface Card{
     title: string,
     image_url: string,
     rarity: string,
+}
+
+export interface Audio{
+    file: File | null,
+    title: string,
+    path: string | null,
 }

@@ -17,8 +17,7 @@ export const useCardStore = defineStore('CardStore', {
     async getCards() {
       try{
         const userStore = useUserStore();
-        const response = await api.get(`/getcatalog/${userStore.user.username}`);
-        console.log(response);
+        const response = await api.get(`/pomodoro/getcatalog/${userStore.user.username}`);
         return response.data
       }catch($erro){
         console.log($erro)

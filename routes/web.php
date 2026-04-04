@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\App\AnalyticController;
+use App\Http\Controllers\App\AudioController;
 use App\Http\Controllers\App\CatalogController;
 use App\Http\Controllers\App\FocusSessionController;
 use App\Http\Controllers\AuthController;
@@ -25,6 +26,10 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [PomodoroController::class, 'index'])->name('pomodoro');
         Route::get('/getcatalog', [CatalogController::class, 'getCatalog']);
         Route::post('/newfocus', [FocusSessionController::class, 'newFocus']);
+    });
+
+    Route::prefix('audio')->group(function(){
+        Route::post('/setaudio',[AudioController::class,'setAudio'])->name('audio.set');
     });
 });
 

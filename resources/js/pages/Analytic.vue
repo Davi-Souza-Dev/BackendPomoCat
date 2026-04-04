@@ -17,7 +17,6 @@ interface Props{
 const props = defineProps<Props>();
 const graphDistStore = useGraphDist();
 graphDistStore.week = props.week;
-
 </script>
 
 <template>
