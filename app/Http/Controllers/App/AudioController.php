@@ -60,4 +60,19 @@ class AudioController extends Controller
             throw new Exception($error->getMessage());
         }
     }
+
+    public function reorder(Request $request){
+        try{
+            $user = Auth::user();
+            $playlist = $request->playlist;
+            foreach($playlist as $order){
+                $audio = Audio::where('user_id',$user->id)->where('id',$order['id'])->first();
+                $audio->order = $order['order'];
+                $audio->save();
+            }
+
+        }catch (Throwable $error) {
+            throw new Exception($error->getMessage());
+        }
+    }
 }

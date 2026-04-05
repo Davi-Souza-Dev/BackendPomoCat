@@ -13,7 +13,7 @@ const emits = defineEmits(['play','delete']);
 
 <template>
     <div
-        class="flex w-full items-start gap-3 rounded-lg border border-primary/60 bg-background-app/50 px-4 py-3 shadow-lg hover:border-2 hover:border-foreground"
+        class="drag-handle flex w-full items-start gap-3 rounded-lg border border-primary/60 bg-background-app/50 px-4 py-3 shadow-lg hover:border-2 hover:border-foreground"
         @click="emits('play')"
         >
         <div

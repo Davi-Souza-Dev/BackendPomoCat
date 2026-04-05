@@ -51,10 +51,29 @@ export const usePlaylistStore = defineStore('playlistStore', {
                 this.playlist = this.playlist.filter((audioPlaylist: Audio) => {
                     return audioPlaylist.id !== audio.id;
                 });
-                
+
                 toast.success('Áudio deletado!');
-            }else{
-              toast.error('Algo deu errado!')
+            } else {
+                toast.error('Algo deu errado!');
+            }
+        },
+        async updatePlaylistOrder(newList: any) {
+            this.playlist = newList.map((audio: Audio, index: number) => ({
+                ...audio,
+                order: index + 1,
+            }));
+
+            try {
+                const payload = this.playlist.map((item) => ({
+                    id: item.id, 
+                    order: item.order,
+                }));
+
+                await api.post('/audio/reorder', {
+                    playlist: payload,
+                });
+            } catch (error) {
+                console.error(error);
             }
         },
     },

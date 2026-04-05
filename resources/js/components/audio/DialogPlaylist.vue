@@ -19,9 +19,18 @@ import { computed, onMounted, ref } from 'vue';
 import { Audio } from '@/types';
 import Input from '../ui/input/Input.vue';
 import { toast } from 'vue-sonner';
+import draggable from 'vuedraggable';
 const dialogAudio = useDialogAudio();
 onMounted(() => {
     playlistStore.getPlaylist();
+});
+
+const dragList = computed({
+    get: () => playlistStore.playlist,
+    set: (value) => {
+        playlistStore.updatePlaylistOrder(value);
+        console.log(dragList.value)
+    },
 });
 
 const sound = ref<Howl | null>(null);
@@ -46,7 +55,6 @@ const handleAudio = (audio: Audio) => {
                 isPlaying.value = true;
                 title.value = audio.title;
                 playlistStore.actualAudio = audio;
-                console.log(playlistStore.actualAudio)
                 trackProgress();
             },
             onend() {
@@ -104,14 +112,14 @@ const nextAudio = () => {
     handleAudio(next);
 };
 
-const prevAudio = () => {  
-   const actualAudioIndex = playlistStore.playlist.findIndex(
+const prevAudio = () => {
+    const actualAudioIndex = playlistStore.playlist.findIndex(
         (audio: Audio) => audio.id == playlistStore.actualAudio.id,
     );
     if (actualAudioIndex <= 0) {
         return toast.error('Sem mais áudios!');
     }
-    
+
     const prev = playlistStore.playlist[actualAudioIndex - 1];
     handleAudio(prev);
 };
@@ -127,9 +135,10 @@ const setVolume = () => {
     Howler.volume(volume.value);
 };
 
-const deleteAudio = async (audio:Audio) =>{
-    playlistStore.deleteAudio(audio)
-}
+const deleteAudio = async (audio: Audio) => {
+    playlistStore.deleteAudio(audio);
+};
+
 </script>
 
 <template>
@@ -144,17 +153,23 @@ const deleteAudio = async (audio:Audio) =>{
                 <SheetTitle>Playlist</SheetTitle>
             </SheetHeader>
 
-            <div
+            <draggable
+                v-model="dragList"
+                item-key="order"
+                tag="div"
                 class="grid flex-1 auto-rows-min gap-6 overflow-y-auto px-4 pb-50"
+                ghost-class="opacity-50"
+                handle=".drag-handle"
+                :animation="300"
             >
-                <AudioItem
-                    v-for="(audio, index) in playlistStore.playlist"
-                    :key="index"
-                    :audio="audio"
-                    @play="handleAudio(audio)"
-                    @delete="deleteAudio(audio)"
-                />
-            </div>
+                <template #item="{ element }">
+                    <AudioItem
+                        :audio="element"
+                        @play="handleAudio(element)"
+                        @delete="deleteAudio(element)"
+                    />
+                </template>
+            </draggable>
 
             <SheetFooter class="absolute bottom-0 w-full rounded-t-lg bg-card">
                 <div

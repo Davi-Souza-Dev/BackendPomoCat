@@ -20,7 +20,7 @@ class Audio extends Model
     /** @use HasFactory<\Database\Factories\AudioFactory> */
     use HasFactory;
     protected $appends = ['url'];
-
+    protected $casts = ['order' => 'integer','title' => 'string'];
 
     protected function url(): Attribute
     {

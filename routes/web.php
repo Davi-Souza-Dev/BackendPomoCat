@@ -32,6 +32,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/setaudio',[AudioController::class,'setAudio'])->name('audio.set');
         Route::get('/getplaylist',[AudioController::class,'getPlaylist'])->name('audio.getPlaylist');
         Route::post('/delete',[AudioController::class,'delete'])->name('audio.delete');
+        Route::post('/reorder',[AudioController::class,'reorder'])->name('audio.reorder');
 
     });
 });
