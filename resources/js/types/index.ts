@@ -38,4 +38,6 @@ export interface Audio{
     file: File | null,
     title: string,
     path: string | null,
+    order: number,
+    url: string | null
 }

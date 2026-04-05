@@ -18,6 +18,8 @@ export const useDialogAudio = defineStore('dialogAudio', {
                 file: null,
                 path: null,
                 title: '',
+                order: 0,
+                url: null
             },
             progrees: 0,
             alert: false,

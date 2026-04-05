@@ -18,11 +18,14 @@ class Audio extends Model
     ];
     /** @use HasFactory<\Database\Factories\AudioFactory> */
     use HasFactory;
+    protected $appends = ['url'];
+
 
     protected function url(): Attribute
     {
         return Attribute::make(
-            get: fn() => Storage::disk('public')->url('audio/' . $this->path),
+            get: fn($path) => asset(Storage::url("audio/" . $this->path)),
+            set: fn($path) => $path
         );
     }
 }

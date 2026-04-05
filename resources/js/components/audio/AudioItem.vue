@@ -8,8 +8,7 @@ interface Props {
     audio: Audio;
 }
 const props = defineProps<Props>();
-    const emits = defineEmits(['play'])
-
+const emits = defineEmits(['play']);
 </script>
 
 <template>

@@ -22,6 +22,8 @@ const showCatalog = async () => {
     await catalogStore.showCatalog();
     loading.value = !loading.value;
 };
+import 'vue-sonner/style.css';
+import { Toaster } from '@/components/ui/sonner';
 
 // PLAYLIST
 const playlistStore = usePlaylistStore();
@@ -39,15 +41,19 @@ const playlistStore = usePlaylistStore();
                     /></Button>
                 </SidebarTrigger>
 
-                <div class="flex w-fit h-10 gap-5 align-middle justify-center items-start">
-                    <div class="flex flex-col justify-center items-end align-center gap-1 ">
+                <div
+                    class="flex h-10 w-full items-start justify-end gap-5 self-end align-middle"
+                >
+                    <div
+                        class="align-center flex flex-col items-end justify-center gap-1"
+                    >
                         <Button
                             class="h-10 w-10 border-2 border-primary-foreground"
                             @click="playlistStore.toggleDialog"
                         >
                             <Music4Icon />
                         </Button>
-                        <PlayerAudio/>
+                        <PlayerAudio />
                     </div>
                     <Button
                         @click="showCatalog()"
@@ -62,6 +68,8 @@ const playlistStore = usePlaylistStore();
             <section
                 class="flex w-full flex-1 flex-col items-center justify-center gap-5"
             >
+                <Toaster class="bg-foreground"/>
+
                 <DialogCatalog />
                 <DialogPlaylist />
                 <slot />

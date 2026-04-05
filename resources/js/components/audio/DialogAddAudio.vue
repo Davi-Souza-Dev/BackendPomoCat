@@ -95,7 +95,7 @@ const togglePlay = () => {
         isPlaying.value = true;
         progressInterval = setInterval(() => {
             currentTime.value = (sound?.seek() as number) ?? 0;
-        }, 100);
+        }, 500);
     }
 };
 

@@ -20,11 +20,14 @@ class AudioController extends Controller
             }
 
             $path = $request->file('file')->store('audio', 'public');
+            $order = Audio::where('user_id',Auth::user()->id)->count() + 1;
             Audio::create([
                 'title' => $request->title,
                 'path' => basename($path),
                 'user_id' => Auth::user()->id,
+                'order' => $order
             ]);
+
         } catch (Throwable $error) {
             throw new Exception($error->getMessage());
         }
@@ -34,7 +37,7 @@ class AudioController extends Controller
     {
         try {
             $user = Auth::user();
-            $playlist = Audio::where('user_id', $user->id)->select('title', 'path')->limit(20)->get();
+            $playlist = Audio::where('user_id', $user->id)->select('title','order','path')->orderBy('order','ASC')->limit(20)->get();
             return response()->json($playlist);
         } catch (Throwable $error) {
             throw new Exception($error->getMessage());

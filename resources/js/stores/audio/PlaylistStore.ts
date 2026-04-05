@@ -21,7 +21,6 @@ export const usePlaylistStore = defineStore('playlistStore', {
     async getPlaylist(){
         const response = await api.get('/audio/getplaylist');
         this.playlist = response.data
-        console.log(this.playlist)
     }
   },
 })
