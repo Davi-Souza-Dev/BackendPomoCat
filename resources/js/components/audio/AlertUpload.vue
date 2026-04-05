@@ -1,25 +1,20 @@
 <script setup lang="ts">
 import {
     AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
     AlertDialogContent,
     AlertDialogDescription,
     AlertDialogFooter,
     AlertDialogHeader,
     AlertDialogTitle,
-    AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
-import { Button } from '@/components/ui/button';
 import { useDialogAudio } from '@/stores/audio/DialogUplaodAudio';
 const dialogAudio = useDialogAudio();
-import { UploadCloud } from 'lucide-vue-next';
 import Progress from '../ui/progress/Progress.vue';
 </script>
 
 <template>
-    <AlertDialog v-bind:open="dialogAudio.alert">
-        <AlertDialogContent>
+    <AlertDialog v-bind:open="dialogAudio.alert" >
+        <AlertDialogContent class="border-foreground border-2">
             <AlertDialogHeader>
                 <AlertDialogTitle
                     class="flex items-center justify-center"
@@ -28,7 +23,7 @@ import Progress from '../ui/progress/Progress.vue';
                 </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-                <Progress :modelValue="dialogAudio.progrees"/>
+                <Progress :modelValue="dialogAudio.progrees" class="bg-foreground p-0 m-0"/>
             </AlertDialogFooter>
         </AlertDialogContent>
     </AlertDialog>

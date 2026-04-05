@@ -1,8 +1,9 @@
 import api from '@/api';
 import { Audio } from '@/types';
-import { progress, useForm } from '@inertiajs/vue3';
+import { useForm } from '@inertiajs/vue3';
 import { defineStore } from 'pinia';
 import { usePlaylistStore } from './PlaylistStore';
+import { toast } from 'vue-sonner';
 
 interface DialogState {
     active: boolean;
@@ -21,7 +22,7 @@ export const useDialogAudio = defineStore('dialogAudio', {
                 path: null,
                 title: '',
                 order: 0,
-                url: null
+                url: null,
             },
             progrees: 0,
             alert: false,
@@ -31,37 +32,47 @@ export const useDialogAudio = defineStore('dialogAudio', {
         toggleDialog() {
             this.active = !this.active;
         },
-        clearDialog(){
+        clearDialog() {
             this.audio.file = null;
             this.audio.title = '';
         },
         async setAudio() {
-            const formData = useForm({
-                ...this.audio,
-            });
+            try {
+                const formData = useForm({
+                    ...this.audio,
+                });
 
-            this.active = false;
-            this.alert = true;
+                this.active = false;
+                this.alert = true;
 
-            const response = await api.post('/audio/setaudio', formData, {
-                onUploadProgress: (progressEvent) => {
-                    if (progressEvent.total) {
-                        const percentCompleted = Math.round(
-                            (progressEvent.loaded * 100) / progressEvent.total,
-                        );
-                        this.progrees = percentCompleted;
-                    }
-                },
-            });
+                const response = await api.post('/audio/setaudio', formData, {
+                    onUploadProgress: (progressEvent) => {
+                        if (progressEvent.total) {
+                            const percentCompleted = Math.round(
+                                (progressEvent.loaded * 100) /
+                                    progressEvent.total,
+                            );
+                            this.progrees = percentCompleted;
+                        }
+                    },
+                });
 
-            if (response.status == 200) {
                 const playlistStore = usePlaylistStore();
-                playlistStore.playlist.push(response.data.audio)
-                setTimeout(()=>{
+                playlistStore.playlist.push(response.data.audio);
+                setTimeout(() => {
                     this.alert = false;
                     this.active = false;
                     this.clearDialog();
-                },500);
+                    this.progrees = 0;
+                }, 500);
+            } catch (error: any) {
+                toast.error(error.response.data.message);
+                setTimeout(() => {
+                    this.alert = false;
+                    this.active = false;
+                    this.clearDialog();
+                    this.progrees = 0;
+                }, 500);
             }
         },
     },

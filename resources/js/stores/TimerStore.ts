@@ -2,7 +2,6 @@ import api from '@/api';
 import type { Card, Timer } from '@/types';
 import { defineStore } from 'pinia';
 import { useUserStore } from './UserStore';
-import { Users } from 'lucide-vue-next';
 interface TimerState {
     timer: Timer;
     interval: number;

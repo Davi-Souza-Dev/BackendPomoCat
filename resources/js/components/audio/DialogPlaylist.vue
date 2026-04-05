@@ -1,20 +1,16 @@
 <script setup lang="ts">
 import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/label';
 import {
     Sheet,
-    SheetClose,
     SheetContent,
-    SheetDescription,
     SheetFooter,
     SheetHeader,
     SheetTitle,
-    SheetTrigger,
 } from '@/components/ui/sheet';
 import { usePlaylistStore } from '@/stores/audio/PlaylistStore';
-import { PlusSquare, PlusSquareIcon, Volume2, VolumeX } from 'lucide-vue-next';
+import { PlusSquare, Volume2, VolumeX } from 'lucide-vue-next';
 import AudioItem from './AudioItem.vue';
-import { Play, Pause, SkipBack, SkipForward, RotateCcw } from 'lucide-vue-next';
+import { Play, Pause, SkipBack, SkipForward } from 'lucide-vue-next';
 const playlistStore = usePlaylistStore();
 import DialogAddAudio from './DialogAddAudio.vue';
 import { useDialogAudio } from '@/stores/audio/DialogUplaodAudio';
@@ -29,7 +25,6 @@ onMounted(() => {
 });
 
 const sound = ref<Howl | null>(null);
-let progressInterval: ReturnType<typeof setInterval> | null = null;
 const duration = ref(0);
 const currentTime = ref(0);
 const isPlaying = ref(false);
@@ -113,9 +108,10 @@ const prevAudio = () => {
    const actualAudioIndex = playlistStore.playlist.findIndex(
         (audio: Audio) => audio.id == playlistStore.actualAudio.id,
     );
-    if (actualAudioIndex < 0) {
+    if (actualAudioIndex <= 0) {
         return toast.error('Sem mais áudios!');
     }
+    
     const prev = playlistStore.playlist[actualAudioIndex - 1];
     handleAudio(prev);
 };
