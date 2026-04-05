@@ -8,7 +8,7 @@ interface Props {
     audio: Audio;
 }
 const props = defineProps<Props>();
-const emits = defineEmits(['play']);
+const emits = defineEmits(['play','delete']);
 </script>
 
 <template>
@@ -38,7 +38,7 @@ const emits = defineEmits(['play']);
                     class="flex items-center justify-center align-middle text-sm leading-tight font-semibold text-foreground capitalize"
                     >{{ props.audio.title }}</span
                 >
-                <Button variant="ghost" class="stroke-red-300"
+                <Button variant="ghost" class="stroke-red-300" @click.stop="emits('delete')"
                     ><Trash2 />
                 </Button>
             </div>

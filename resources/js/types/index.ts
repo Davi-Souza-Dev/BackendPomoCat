@@ -35,6 +35,7 @@ export interface Card{
 }
 
 export interface Audio{
+    id: number,
     file: File | null,
     title: string,
     path: string | null,

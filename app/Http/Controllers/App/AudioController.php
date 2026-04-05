@@ -7,6 +7,7 @@ use App\Models\Audio;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Throwable;
 
 class AudioController extends Controller
@@ -20,14 +21,17 @@ class AudioController extends Controller
             }
 
             $path = $request->file('file')->store('audio', 'public');
-            $order = Audio::where('user_id',Auth::user()->id)->count() + 1;
-            Audio::create([
+            $order = Audio::where('user_id', Auth::user()->id)->count() + 1;
+            $audio = Audio::create([
                 'title' => $request->title,
                 'path' => basename($path),
                 'user_id' => Auth::user()->id,
                 'order' => $order
             ]);
 
+            if($audio){
+                return response()->json(['audio' => $audio],200);
+            }
         } catch (Throwable $error) {
             throw new Exception($error->getMessage());
         }
@@ -37,8 +41,21 @@ class AudioController extends Controller
     {
         try {
             $user = Auth::user();
-            $playlist = Audio::where('user_id', $user->id)->select('title','order','path')->orderBy('order','ASC')->limit(20)->get();
+            $playlist = Audio::where('user_id', $user->id)->select('id', 'title', 'order', 'path')->orderBy('order', 'ASC')->limit(20)->get();
             return response()->json($playlist);
+        } catch (Throwable $error) {
+            throw new Exception($error->getMessage());
+        }
+    }
+
+    public function delete(Request $request)
+    {
+        try {
+            $user = Auth::user();
+            $audio = Audio::where('id', $request->id)->where('user_id', $user->id)->first();
+            Storage::disk('public')->delete('audio/' . $audio->path);
+            $audio->delete();
+            return response()->json("Audio deletado!", 200);
         } catch (Throwable $error) {
             throw new Exception($error->getMessage());
         }

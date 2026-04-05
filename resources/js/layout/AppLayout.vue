@@ -53,7 +53,7 @@ const playlistStore = usePlaylistStore();
                         >
                             <Music4Icon />
                         </Button>
-                        <PlayerAudio />
+                        <!-- <PlayerAudio /> -->
                     </div>
                     <Button
                         @click="showCatalog()"

@@ -50,6 +50,8 @@ const handleAudio = (audio: Audio) => {
                 duration.value = sound.value?.duration() ?? 0;
                 isPlaying.value = true;
                 title.value = audio.title;
+                playlistStore.actualAudio = audio;
+                console.log(playlistStore.actualAudio)
                 trackProgress();
             },
             onend() {
@@ -64,6 +66,7 @@ const handleAudio = (audio: Audio) => {
         sound.value.play();
         Howler.volume(volume.value);
     } catch (error) {
+        console.info(error);
         toast.error('Erro ao iniciar áudio');
     }
 };
@@ -95,27 +98,25 @@ const togglePlay = () => {
 };
 
 const nextAudio = () => {
-    const actualAudio = playlistStore.playlist.findIndex(
-        (audio: Audio) => audio.title == title.value,
+    const actualAudioIndex = playlistStore.playlist.findIndex(
+        (audio: Audio) => audio.id == playlistStore.actualAudio.id,
     );
     const length = playlistStore.playlist.length;
-    if (actualAudio == length) {
-        return toast.error('Sem mais áduios!');
+    if (actualAudioIndex + 1 == length) {
+        return toast.error('Sem mais áudios!');
     }
-    const next = playlistStore.playlist[actualAudio + 1];
-    console.log(actualAudio);
+    const next = playlistStore.playlist[actualAudioIndex + 1];
     handleAudio(next);
 };
 
-const prevAudio = () => {
-    const actualAudio = playlistStore.playlist.findIndex(
-        (audio: Audio) => audio.title == title.value,
+const prevAudio = () => {  
+   const actualAudioIndex = playlistStore.playlist.findIndex(
+        (audio: Audio) => audio.id == playlistStore.actualAudio.id,
     );
-    const prev = playlistStore.playlist[actualAudio - 1];
-    const length = playlistStore.playlist.length;
-    if (actualAudio <= 0) {
-        return toast.error('Sem mais áduios!');
+    if (actualAudioIndex < 0) {
+        return toast.error('Sem mais áudios!');
     }
+    const prev = playlistStore.playlist[actualAudioIndex - 1];
     handleAudio(prev);
 };
 
@@ -129,6 +130,10 @@ const setVolume = () => {
     if (!sound.value) return;
     Howler.volume(volume.value);
 };
+
+const deleteAudio = async (audio:Audio) =>{
+    playlistStore.deleteAudio(audio)
+}
 </script>
 
 <template>
@@ -151,6 +156,7 @@ const setVolume = () => {
                     :key="index"
                     :audio="audio"
                     @play="handleAudio(audio)"
+                    @delete="deleteAudio(audio)"
                 />
             </div>
 

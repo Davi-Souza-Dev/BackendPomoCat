@@ -144,7 +144,7 @@ const googleLogin = () => {
                             <Button
                                 variant="outline"
                                 type="button"
-                                class="bg-foreground text-background"
+                                class="bg-white text-background"
                                 @click="googleLogin"
                             >
                                 Login com Google

@@ -24,7 +24,7 @@ export const useGraphDist = defineStore('useGraphDist', {
     actions: {
         async prevWeek() {
             this.offset++;
-            const response = await api.post(`/analytic/dist/prevweek`, {
+            const response = await api.post(`pomodoro/analytic/dist/prevweek`, {
                 offsetweek: this.offset,
             });
 
@@ -32,7 +32,7 @@ export const useGraphDist = defineStore('useGraphDist', {
         },
         async nextweek() {
             this.offset--;
-            const response = await api.post(`/analytic/dist/nextweek`, {
+            const response = await api.post(`pomodoro/analytic/dist/nextweek`, {
                 offsetweek: this.offset,
             });
             this.week = response.data;

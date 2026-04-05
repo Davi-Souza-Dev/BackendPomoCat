@@ -19,8 +19,8 @@ Route::get('/', function () {
 
 Route::get('/pomodoro', [PomodoroController::class, 'index'])->name('pomodoro');
 Route::get('/pomodoro/analytics', [AnalyticController::class, 'index'])->name('pomodoro.analytic');
-Route::post("pomodoro/analytic/dist/prevweek", [AnalyticController::class, 'distgraph']);
-Route::post("pomodoro/analytic/dist/nextweek", [AnalyticController::class, 'distgraph']);
+Route::post("/pomodoro/analytic/dist/prevweek", [AnalyticController::class, 'distgraph']);
+Route::post("/pomodoro/analytic/dist/nextweek", [AnalyticController::class, 'distgraph']);
 Route::middleware('auth')->group(function () {
     Route::prefix('pomodoro')->group(function () {
         Route::get('/', [PomodoroController::class, 'index'])->name('pomodoro');
@@ -31,6 +31,8 @@ Route::middleware('auth')->group(function () {
     Route::prefix('audio')->group(function(){
         Route::post('/setaudio',[AudioController::class,'setAudio'])->name('audio.set');
         Route::get('/getplaylist',[AudioController::class,'getPlaylist'])->name('audio.getPlaylist');
+        Route::post('/delete',[AudioController::class,'delete'])->name('audio.delete');
+
     });
 });
 

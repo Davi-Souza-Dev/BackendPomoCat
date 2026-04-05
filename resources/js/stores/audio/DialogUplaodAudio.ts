@@ -2,6 +2,7 @@ import api from '@/api';
 import { Audio } from '@/types';
 import { progress, useForm } from '@inertiajs/vue3';
 import { defineStore } from 'pinia';
+import { usePlaylistStore } from './PlaylistStore';
 
 interface DialogState {
     active: boolean;
@@ -15,6 +16,7 @@ export const useDialogAudio = defineStore('dialogAudio', {
         return {
             active: false,
             audio: {
+                id: 0,
                 file: null,
                 path: null,
                 title: '',
@@ -53,6 +55,8 @@ export const useDialogAudio = defineStore('dialogAudio', {
             });
 
             if (response.status == 200) {
+                const playlistStore = usePlaylistStore();
+                playlistStore.playlist.push(response.data.audio)
                 setTimeout(()=>{
                     this.alert = false;
                     this.active = false;

@@ -113,6 +113,11 @@ const clearFile = () => {
     file.value = null;
 };
 
+const setAudio = async () =>{
+    await dialogAudio.setAudio();
+    clearFile();
+}
+
 onUnmounted(() => destroySound());
 </script>
 
@@ -202,7 +207,7 @@ onUnmounted(() => destroySound());
                     </div>
                 </div>
 
-                <div v-if="file">
+                <div v-if="file != null">
                     <FieldSet>
                         <FieldGroup>
                             <Field>
@@ -229,7 +234,7 @@ onUnmounted(() => destroySound());
                         >Cancelar</Button
                     >
                 </DialogClose>
-                <Button type="submit" :disabled="!file || dialogAudio.audio.title.length == 0" @click="dialogAudio.setAudio()">Salvar</Button>
+                <Button type="submit" :disabled="!file || dialogAudio.audio.title.length == 0" @click="setAudio">Salvar</Button>
             </DialogFooter>
         </DialogContent>
     </Dialog>
