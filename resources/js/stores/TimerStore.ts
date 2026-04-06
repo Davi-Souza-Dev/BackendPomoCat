@@ -2,6 +2,7 @@ import api from '@/api';
 import type { Card, Timer } from '@/types';
 import { defineStore } from 'pinia';
 import { useUserStore } from './UserStore';
+import { useAudioPlayer } from '@/composables/useAudioPlayer';
 interface TimerState {
     timer: Timer;
     interval: number;
@@ -36,8 +37,10 @@ export const useTimerStore = defineStore('TimerStore', {
     },
     actions: {
         async startTimer() {
+            const { startPlaylist } = useAudioPlayer();
             if (this.timer.start == false) {
                 this.startTimerAudio();
+                startPlaylist();
                 this.minReal = this.timer.min;
                 this.timer.start = !this.timer.start;
                 const totalSecs =
@@ -103,7 +106,7 @@ export const useTimerStore = defineStore('TimerStore', {
             this.timer.min = this.minReal;
             this.timer.sec = 0;
             if (status == 'completed') {
-                userStore.todayfocus = response.data.success.todayfocus
+                userStore.todayfocus = response.data.success.todayfocus;
                 this.newCard.card = response.data.success.card;
                 this.newCard.completed = true;
             }

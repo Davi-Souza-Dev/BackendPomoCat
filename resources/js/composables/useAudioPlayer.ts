@@ -1,59 +1,136 @@
+import { usePlaylistStore } from '@/stores/audio/PlaylistStore';
+import { Audio } from '@/types';
 import { ref } from 'vue';
-import videojs from 'video.js';
-import { Howl } from 'howler';
+import { toast } from 'vue-sonner';
 
-type SourceType = 'file' | 'youtube';
+const sound = ref<Howl | null>(null);
+const duration = ref(0);
+const currentTime = ref(0);
+const isPlaying = ref(false);
+let rafId: number | null = null;
+const title = ref('');
+const muted = ref(false);
+const volume = ref(0.5);
 
 export function useAudioPlayer() {
-    let howl: Howl | null = null;
-    let vjsPlayer: any = null;
-    const isPlaying = ref(false);
-    const progress = ref(0);
+const playlistStore = usePlaylistStore();
 
-    const loadFile = (src: string) => {
-        // Limpa o player anterior
-        vjsPlayer?.dispose();
-        vjsPlayer = null;
-
-        howl = new Howl({
-            src: [src],
-            html5: true,        // essencial para arquivos grandes
-            onplay: () => isPlaying.value = true,
-            onpause: () => isPlaying.value = false,
-            onend: () => isPlaying.value = false,
-        });
-    };
-
-    const loadYoutube = (element: HTMLVideoElement, src: string) => {
-        // Limpa o player anterior
-        howl?.unload();
-        howl = null;
-
-        vjsPlayer = videojs(element, {
-            techOrder: ['youtube'],
-            sources: [{ type: 'video/youtube', src }],
-        });
-    };
-
-    const play = () => {
-        howl ? howl.play() : vjsPlayer?.play();
-        isPlaying.value = true;
-    };
-
-    const pause = () => {
-        howl ? howl.pause() : vjsPlayer?.pause();
-        isPlaying.value = false;
-    };
-
-    const getProgress = (): number => {
-        if (howl) {
-            return ((howl.seek() as number) / howl.duration()) * 100;
+    const handleAudio = (audio: Audio) => {
+        try {
+            sound.value?.unload();
+            sound.value = null;
+            sound.value = new Howl({
+                src: [audio.url ?? ''],
+                format: ['mp3'],
+                html5: true,
+                onload() {
+                    duration.value = sound.value?.duration() ?? 0;
+                    isPlaying.value = true;
+                    title.value = audio.title;
+                    playlistStore.actualAudio = audio;
+                    trackProgress();
+                },
+                onend() {
+                    stopTracking();
+                    isPlaying.value = false;
+                    currentTime.value = 0;
+                },
+                onplayerror() {
+                    toast.error('Erro ao iniciar áudio');
+                },
+            });
+            sound.value.play();
+            Howler.volume(volume.value);
+        } catch (error) {
+            console.info(error);
+            toast.error('Erro ao iniciar áudio');
         }
-        if (vjsPlayer) {
-            return (vjsPlayer.currentTime() / vjsPlayer.duration()) * 100;
-        }
-        return 0;
     };
 
-    return { play, pause, isPlaying, progress, loadFile, loadYoutube, getProgress };
+    const trackProgress = () => {
+        if (!sound.value || !isPlaying.value) return;
+        currentTime.value = sound.value.seek() as number;
+        rafId = requestAnimationFrame(trackProgress);
+    };
+
+    const stopTracking = () => {
+        if (rafId) {
+            cancelAnimationFrame(rafId);
+            rafId = null;
+        }
+    };
+
+    const togglePlay = () => {
+        if (!sound.value) return;
+        if (isPlaying.value) {
+            sound.value.pause();
+            isPlaying.value = false;
+            stopTracking();
+        } else {
+            sound.value.play();
+            isPlaying.value = true;
+            trackProgress();
+        }
+    };
+
+    const nextAudio = () => {
+        const actualAudioIndex = playlistStore.playlist.findIndex(
+            (audio: Audio) => audio.id == playlistStore.actualAudio.id,
+        );
+        const length = playlistStore.playlist.length;
+        if (actualAudioIndex + 1 == length) {
+            return toast.error('Sem mais áudios!');
+        }
+        const next = playlistStore.playlist[actualAudioIndex + 1];
+        handleAudio(next);
+    };
+
+    const prevAudio = () => {
+        const actualAudioIndex = playlistStore.playlist.findIndex(
+            (audio: Audio) => audio.id == playlistStore.actualAudio.id,
+        );
+        if (actualAudioIndex <= 0) {
+            return toast.error('Sem mais áudios!');
+        }
+
+        const prev = playlistStore.playlist[actualAudioIndex - 1];
+        handleAudio(prev);
+    };
+
+    const toggleMute = () => {
+        if (!sound.value) return;
+        muted.value = !muted.value;
+        sound.value.mute(muted.value);
+    };
+
+    const setVolume = () => {
+        if (!sound.value) return;
+        Howler.volume(volume.value);
+    };
+
+    const deleteAudio = async (audio: Audio) => {
+        playlistStore.deleteAudio(audio);
+    };
+
+    const startPlaylist = () =>{
+        handleAudio(playlistStore.playlist[0]);
+    }
+
+    return {
+        handleAudio,
+        togglePlay,
+        nextAudio,
+        prevAudio,
+        toggleMute,
+        setVolume,
+        deleteAudio,
+        startPlaylist,
+        title,
+        sound,
+        isPlaying,
+        currentTime,
+        duration,
+        volume,
+        muted
+    };
 }
