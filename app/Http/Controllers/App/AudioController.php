@@ -2,36 +2,29 @@
 
 namespace App\Http\Controllers\App;
 
+use App\Actions\Audio\CreateAudioUser;
 use App\Http\Requests\Audio\FormAudioRequest;
 use App\Models\Audio;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
+
 use Throwable;
 
 class AudioController extends Controller
 {
-    public function setAudio(FormAudioRequest $request)
+    public function setAudio(FormAudioRequest $request, CreateAudioUser $createAudio)
     {
 
         try {
             if (!$request->hasFile('file')) {
                 throw new Exception('Sem arquivo de audio!');
             }
-
-            $path = $request->file('file')->store('audio', 'public');
-            $order = Audio::where('user_id', Auth::user()->id)->count() + 1;
-            $audio = Audio::create([
-                'title' => $request->title,
-                'path' => basename($path),
-                'user_id' => Auth::user()->id,
-                'order' => $order
-            ]);
-
-            if($audio){
-                return response()->json(['audio' => $audio],200);
-            }
+            $user = Auth::user();
+            $file = $request->file('file');
+            return response()->json(['audio' => $createAudio->execute($user,$file,$request->title)], 200);
         } catch (Throwable $error) {
             throw new Exception($error->getMessage());
         }
@@ -61,17 +54,21 @@ class AudioController extends Controller
         }
     }
 
-    public function reorder(Request $request){
-        try{
-            $user = Auth::user();
-            $playlist = $request->playlist;
-            foreach($playlist as $order){
-                $audio = Audio::where('user_id',$user->id)->where('id',$order['id'])->first();
-                $audio->order = $order['order'];
-                $audio->save();
-            }
-
-        }catch (Throwable $error) {
+    protected $playlist = [];
+    public function reorder(Request $request)
+    {
+        try {
+            $this->playlist = $request->playlist;
+            DB::transaction(function () {
+                $user = Auth::user();
+                foreach ($this->playlist as $order) {
+                    $audio = Audio::where('user_id', $user->id)->where('id', $order['id'])->first();
+                    $audio->order = $order['order'];
+                    $audio->save();
+                }
+            });
+         
+        } catch (Throwable $error) {
             throw new Exception($error->getMessage());
         }
     }
