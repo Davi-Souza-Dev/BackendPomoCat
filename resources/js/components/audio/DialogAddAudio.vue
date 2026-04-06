@@ -127,7 +127,7 @@ onUnmounted(() => destroySound());
             <DialogHeader>
                 <DialogTitle>Adicionar música / áudio</DialogTitle>
                 <DialogDescription>
-                    Envie um arquivo .mp3 para salvar em sua playlist. Limite de tamanhp 128 MB
+                    Envie um arquivo .mp3 para salvar em sua playlist. Limite de tamanho 128 MB
                 </DialogDescription>
             </DialogHeader>
 

@@ -34,6 +34,7 @@ const playlistStore = usePlaylistStore();
                     stopTracking();
                     isPlaying.value = false;
                     currentTime.value = 0;
+                    nextAudio();
                 },
                 onplayerror() {
                     toast.error('Erro ao iniciar áudio');
