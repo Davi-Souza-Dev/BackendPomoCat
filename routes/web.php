@@ -24,7 +24,7 @@ Route::post("/pomodoro/analytic/dist/nextweek", [AnalyticController::class, 'dis
 Route::middleware('auth')->group(function () {
     Route::prefix('pomodoro')->group(function () {
         Route::get('/', [PomodoroController::class, 'index'])->name('pomodoro');
-        Route::get('/getcatalog', [CatalogController::class, 'getCatalog']);
+        // Route::get('/getcatalog', [CatalogController::class, 'getCatalog']);
         Route::post('/newfocus', [FocusSessionController::class, 'newFocus']);
     });
 

@@ -17,7 +17,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         FocusSession::factory(20)->create();
-        Card::factory(50)->create();
-        UserCard::factory(20)->create();
+        // Card::factory(50)->create();
+        // UserCard::factory(20)->create();
     }
 }

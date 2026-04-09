@@ -28,10 +28,9 @@ class FocusSessionController extends Controller
                 throw new Exception('Erro ao validar dados');
             }
 
-            $card = $createFocusSessions->execute($user, $request->only(['duration', 'status']));
+            $focusSession = $createFocusSessions->execute($user, $request->only(['duration', 'status']));
 
             return response()->json(['success' => [
-                'card' => $card,
                 'todayfocus' => $getTodayFocus->execute($user),
             ]], 200);
 

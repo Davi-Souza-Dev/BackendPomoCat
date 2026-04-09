@@ -6,13 +6,10 @@ import Button from '@/components/ui/button/Button.vue';
 import { useTimerStore } from '@/stores/TimerStore';
 import { LucideBookOpen, MenuIcon, Music4Icon } from 'lucide-vue-next';
 import { ref } from 'vue';
-import { useCardStore } from '@/stores/admin/CardStore';
 import { useCatalogStore } from '@/stores/CatalogStore';
 import Loading from '@/components/pomodoro/Loading.vue';
 import DialogPlaylist from '@/components/audio/DialogPlaylist.vue';
-import { usePlayerStore } from '@/stores/PlayerStore';
 import { usePlaylistStore } from '@/stores/audio/PlaylistStore';
-import PlayerAudio from '@/components/audio/PlayerAudio.vue';
 
 const timerStore = useTimerStore();
 const catalogStore = useCatalogStore();
@@ -22,6 +19,7 @@ const showCatalog = async () => {
     await catalogStore.showCatalog();
     loading.value = !loading.value;
 };
+
 import 'vue-sonner/style.css';
 import { Toaster } from '@/components/ui/sonner';
 
@@ -53,15 +51,14 @@ const playlistStore = usePlaylistStore();
                         >
                             <Music4Icon />
                         </Button>
-                        <!-- <PlayerAudio /> -->
-                    </div>
-                    <Button
+                   </div>
+                    <!-- <Button
                         @click="showCatalog()"
                         class="h-10 w-10 border-2 border-primary-foreground"
                         v-if="!timerStore.timer.start"
                     >
                         <LucideBookOpen />
-                    </Button>
+                    </Button> -->
                 </div>
             </header>
 

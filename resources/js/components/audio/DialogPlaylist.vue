@@ -42,7 +42,7 @@ onMounted(() => {
 });
 
 const dragList = computed({
-    get: () => playlistStore.playlist,
+    get: () => playlistStore.playlist ?? [],
     set: (value) => {
         playlistStore.updatePlaylistOrder(value);
     },

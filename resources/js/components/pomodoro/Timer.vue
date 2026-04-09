@@ -15,7 +15,7 @@ const showDialogConfig = ref(false);
         :open="showDialogConfig"
         @update:open="showDialogConfig = false"
     />
-    <UnlockCard />
+    <!-- <UnlockCard /> -->
 
     <div
         class="flex flex-col items-center justify-center gap-5 md:gap-10"

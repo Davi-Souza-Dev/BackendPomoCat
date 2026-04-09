@@ -131,7 +131,7 @@ onUnmounted(() => destroySound());
                 </DialogDescription>
             </DialogHeader>
 
-            <div class="flex flex-col gap-4">
+            <div class="flex flex-col gap-4 max-w-full">
                 <!-- upload -->
                 <Label
                     v-if="file == null"

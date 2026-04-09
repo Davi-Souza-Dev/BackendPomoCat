@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import CentralIcon from '@/components/pomodoro/CentralIcon.vue'
-import DialogCatalog from '@/components/pomodoro/DialogCatalog.vue'
 import Timer from '@/components/pomodoro/Timer.vue'
 import AppLayout from '@/layout/AppLayout.vue'
 import { useTimerStore } from '@/stores/TimerStore'

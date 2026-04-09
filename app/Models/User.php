@@ -3,13 +3,15 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use Illuminate\Container\Attributes\Auth;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 
-class User extends Authenticatable 
+class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable, TwoFactorAuthenticatable;
@@ -53,11 +55,18 @@ class User extends Authenticatable
         ];
     }
 
-    public function cards(): HasMany{
-        return $this->hasMany(UserCard::class,'user_id','id');
+    public function cards(): HasMany
+    {
+        return $this->hasMany(UserCard::class, 'user_id', 'id');
     }
 
-    public function focusSession(): HasMany{
-        return $this->hasMany(FocusSession::class,'user_id','id');
+    public function focusSession(): HasMany
+    {
+        return $this->hasMany(FocusSession::class, 'user_id', 'id');
+    }
+
+    public function playlist(): HasMany
+    {
+        return $this->hasMany(Audio::class, 'user_id', 'id')->select('id', 'title', 'order', 'path')->orderBy('order', 'ASC')->limit(20);
     }
 }

@@ -17,7 +17,7 @@ export const useTimerStore = defineStore('TimerStore', {
     state: (): TimerState => {
         return {
             timer: {
-                min: 50,
+                min: 1,
                 sec: 0,
                 start: false,
             },
@@ -107,8 +107,8 @@ export const useTimerStore = defineStore('TimerStore', {
             this.timer.sec = 0;
             if (status == 'completed') {
                 userStore.todayfocus = response.data.success.todayfocus;
-                this.newCard.card = response.data.success.card;
-                this.newCard.completed = true;
+                // this.newCard.card = response.data.success.card;
+                // this.newCard.completed = true;
             }
         },
     },
