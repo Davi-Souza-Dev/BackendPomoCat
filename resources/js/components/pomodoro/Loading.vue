@@ -9,6 +9,7 @@ defineProps<Props>()
 </script>
 <template>
   <AlertDialog :open="isLoading">
+    
     <AlertDialogContent class="border-none bg-transparent shadow-none flex flex-col items-center justify-center outline-none">
       
       <div class="relative flex items-center justify-center">

@@ -54,3 +54,5 @@ Route::middleware(AuthAdmin::class)->group(function () {
 Route::get('auth/login', [AuthController::class, 'loginForm'])->name('auth.loginForm');
 Route::post('auth/login', [AuthController::class, 'login'])->name('auth.login');
 Route::post('auth/logingoogle', [AuthController::class, 'loginGoogle'])->name('auth.loginGoogle');
+Route::get('auth/register', [AuthController::class, 'registerForm'])->name('auth.registerForm');
+Route::post('auth/register', [AuthController::class, 'register'])->name('auth.register');

@@ -21,68 +21,42 @@ import { EyeClosedIcon, EyeIcon } from 'lucide-vue-next';
 const props = defineProps<{
     class?: HTMLAttributes['class'];
 }>();
+
 import {
     InputGroup,
     InputGroupAddon,
     InputGroupInput,
 } from '@/components/ui/input-group';
+
 const showPassword = ref(false);
+
 const info = ref({
+    username: '',
     email: '',
     password: '',
+    password_confirmation: '',
 });
-import { Toaster, toast } from 'vue-sonner';
+
+import { Toaster } from 'vue-sonner';
 import 'vue-sonner/style.css';
 import { Toggle } from '@/components/ui/toggle';
 import { useUserStore } from '@/stores/UserStore';
+import LoadingBar from '../LoadingBar.vue';
 
 const userStore = useUserStore();
 const loading = ref(false);
-const login = async () => {
+
+const register = async () => {
     loading.value = !loading.value;
-    await userStore.loginForm(
+    await userStore.register(
+        info.value.username,
         info.value.email,
         info.value.password,
+        info.value.password_confirmation,
     );
     loading.value = !loading.value;
 };
 
-// LOGIN COM O GOOGLE
-import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
-import Loading from '../pomodoro/Loading.vue';
-import LoadingBar from '../LoadingBar.vue';
-const auth = getAuth();
-const provider = new GoogleAuthProvider();
-
-const googleLogin = () => {
-    loading.value = !loading.value;
-
-    signInWithPopup(auth, provider)
-        .then((result) => {
-            const credential = GoogleAuthProvider.credentialFromResult(result);
-            const token = credential?.accessToken;
-            const user = result.user;
-            userStore.loginGoogle(
-                user.email,
-                user.uid,
-                user.displayName,
-                user.photoURL,
-            );
-            loading.value = !loading.value;
-        })
-        .catch((error) => {
-            // Handle Errors here.
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            // The email of the user's account used.
-            const email = error.customData.email;
-            // The AuthCredential type that was used.
-            const credential = GoogleAuthProvider.credentialFromError(error);
-            loading.value = !loading.value;
-
-            toast.error('Algo deu errado...!');
-        });
-};
 </script>
 
 <template>
@@ -91,11 +65,21 @@ const googleLogin = () => {
         <LoadingBar :loading="loading" />
         <Card>
             <CardHeader>
-                <CardTitle class="text-3xl">Login</CardTitle>
+                <CardTitle class="text-3xl">Registre-se</CardTitle>
             </CardHeader>
             <CardContent>
                 <form>
                     <FieldGroup>
+                        <Field>
+                            <FieldLabel for="username"> Nome de usuário </FieldLabel>
+                            <Input
+                                id="username"
+                                type="text"
+                                placeholder=""
+                                required
+                                v-model="info.username"
+                            />
+                        </Field>
                         <Field>
                             <FieldLabel for="email"> Email </FieldLabel>
                             <Input
@@ -107,16 +91,7 @@ const googleLogin = () => {
                             />
                         </Field>
                         <Field>
-                            <div class="flex items-center">
-                                <FieldLabel for="password"> Senha </FieldLabel>
-                                <a
-                                    href="#"
-                                    class="ml-auto inline-block text-sm underline-offset-4 hover:underline"
-                                >
-                                    Esqueceu a senha?
-                                </a>
-                            </div>
-
+                            <FieldLabel for="email"> Senha </FieldLabel>
                             <InputGroup>
                                 <InputGroupInput
                                     id="password"
@@ -130,9 +105,9 @@ const googleLogin = () => {
                                 <InputGroupAddon align="inline-end">
                                     <Toggle
                                         aria-label="Toggle bold"
-                                        class="h-8 w-8"
+                                        class="h-8 w-8 bg-transparent active:bg-transparent"
                                         v-model="showPassword"
-                                    >
+                                        >
                                         <EyeIcon v-if="showPassword == false" />
                                         <EyeClosedIcon v-else />
                                     </Toggle>
@@ -140,20 +115,24 @@ const googleLogin = () => {
                             </InputGroup>
                         </Field>
                         <Field>
-                            <Button type="button" @click="login">
-                                Login
-                            </Button>
-                            <Button
-                                variant="outline"
-                                type="button"
-                                class="bg-white text-background"
-                                @click="googleLogin"
-                            >
-                                Login com Google
+                            <div class="flex items-center">
+                                <FieldLabel for="password_confirmation"> Confirmar Senha </FieldLabel>
+                            </div>
+                            <InputGroup>
+                                <InputGroupInput
+                                    id="password_confirmation"
+                                    v-model="info.password_confirmation"
+                                    type="password"
+                                />
+                            </InputGroup>
+                        </Field>
+                        <Field>
+                            <Button type="button" @click="register">
+                                Registrar
                             </Button>
                             <FieldDescription class="text-center">
-                                Não tem uma conta?
-                                <a href="/auth/register"> Crie uma </a>
+                                Já tem uma conta?
+                                <a href="/auth/login"> Faça login </a>
                             </FieldDescription>
                         </Field>
                     </FieldGroup>

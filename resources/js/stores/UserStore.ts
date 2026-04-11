@@ -1,11 +1,12 @@
 import api from '@/api';
-import type { User } from '@/types';
-import { useForm, usePage } from '@inertiajs/vue3';
+import type { FormRegisterError, User } from '@/types';
+import { router, useForm, usePage } from '@inertiajs/vue3';
 import { defineStore } from 'pinia';
+import { toast } from 'vue-sonner';
 
 interface UserState {
     user: User;
-    todayfocus: number,
+    todayfocus: number;
 }
 export const useUserStore = defineStore('UserStore', {
     state: (): UserState => {
@@ -18,26 +19,54 @@ export const useUserStore = defineStore('UserStore', {
             todayfocus: 0,
         };
     },
-    getters:{
-        authUser: () => usePage().props.auth.user
+    getters: {
+        username: () => usePage().props.auth.username,
     },
     actions: {
         async loginForm(email: string, password: string) {
             try {
+                if (email == '' && password == '') {
+                    toast.error('Email e Senha obrigátorios!');
+                    return;
+                }
                 const formData = useForm({
                     email: email,
                     password: password,
                 });
 
                 formData.post('/auth/login', {
-                    onError: ($error) => {
-                        return {
-                            title: $error,
-                        };
+                    onError: (error: any) => {
+                        toast.error(error.message)
                     },
                 });
-            } catch ($error) {
-                alert($error);
+            } catch ($error) {}
+        },
+
+        async register(
+            username: string,
+            email: string,
+            password: string,
+            password_confirmation: string,
+        ) {
+            try {
+                const formData = useForm({
+                    username: username,
+                    email: email,
+                    password: password,
+                    password_confirmation: password_confirmation,
+                });
+
+                formData.post('/auth/register', {
+                    onSuccess: (message: any) => {
+                        toast.success('Cadastro realizado!');
+                    },
+                    onError: (error: FormRegisterError) => {
+                        const errorMessage = Object.values(error)[0];
+                        toast.error(errorMessage);
+                    },
+                });
+            } catch (error: any) {
+                toast.error(error.errors);
             }
         },
         async loginGoogle(
@@ -61,9 +90,7 @@ export const useUserStore = defineStore('UserStore', {
 
                 formData.post('/auth/logingoogle', {
                     onError: ($error) => {
-                        return {
-                            title: $error,
-                        };
+                        toast.error($error.error)
                     },
                 });
             }

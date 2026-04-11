@@ -15,30 +15,37 @@ export type AppPageProps<
 
 // APP
 
-export interface Timer{
-    start: boolean,
-    min: number,
-    sec: number
+export interface Timer {
+    start: boolean;
+    min: number;
+    sec: number;
 }
 
-export interface User{
-    username: string,
-    email: string,
-    photo: string
+export interface User {
+    username: string;
+    email: string;
+    photo: string;
 }
 
-export interface Card{
-    id: number,
-    title: string,
-    image_url: string,
-    rarity: string,
+export interface Card {
+    id: number;
+    title: string;
+    image_url: string;
+    rarity: string;
 }
 
-export interface Audio{
-    id: number,
-    file: File | null,
-    title: string,
-    path: string | null,
-    order: number,
-    url: string | null
+export interface Audio {
+    id: number;
+    file: File | null;
+    title: string;
+    path: string | null;
+    order: number;
+    url: string | null;
+}
+
+export interface FormRegisterError {
+    username?: string;
+    email?: string;
+    password?: string;
+    password_confirmation?: string;
 }

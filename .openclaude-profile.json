@@ -3,7 +3,7 @@
   "env": {
     "OPENAI_BASE_URL": "https://openrouter.ai/api/v1",
     "OPENAI_MODEL": "openrouter/free",
-    "OPENAI_API_KEY": "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"
+    "OPENAI_API_KEY": "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"
   },
-  "createdAt": "2026-04-08T13:43:22.203Z"
+  "createdAt": "2026-04-09T20:24:50.964Z"
 }

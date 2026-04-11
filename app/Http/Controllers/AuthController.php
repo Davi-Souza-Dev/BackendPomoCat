@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Auth\FormRegisterRequest;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -28,11 +30,11 @@ class AuthController
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
-            return redirect()->route('auth.loginForm');
+            return redirect()->route('pomodoro');
         }
 
         return back()->withErrors([
-            'email' => 'Email ou senha inválidos',
+            'message' => 'Email ou senha inválidos',
         ]);
     }
 
@@ -45,7 +47,6 @@ class AuthController
             ]);
             if (Auth::attempt($credentials)) {
                 $request->session()->regenerate();
-
                 return redirect()->route('pomodoro');
             } else {
                 $user = User::create([
@@ -59,12 +60,31 @@ class AuthController
 
                 return redirect()->route('pomodoro');
             }
-        } catch (Throwable $error) {
+        } catch (Exception $error) {
             return [
-                "error" => [
-                    'title' => $error->getMessage(),
-                ]
+                "error" => $error->getMessage(),
             ];
+        }
+    }
+
+    public function registerForm()
+    {
+        Auth::logout();
+        return Inertia::render('auth/Register');
+    }
+
+    public function register(FormRegisterRequest $request)
+    {
+        try {
+            $user = User::create([
+                'username' => $request->username,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+            ]);
+            sleep(1);
+            return redirect()->route('pomodoro');
+        } catch (Exception $error) {
+            return $error->getMessage();
         }
     }
 }
