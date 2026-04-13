@@ -13,7 +13,6 @@ class FocusSessionController extends Controller
 {
     public function newFocus(Request $request, CreateFocusSessions $createFocusSessions,GetTodayFocus $getTodayFocus)
     {
-
         try {
             // CHECK USER
             $user = Auth::user();
@@ -28,7 +27,7 @@ class FocusSessionController extends Controller
                 throw new Exception('Erro ao validar dados');
             }
 
-            $focusSession = $createFocusSessions->execute($user, $request->only(['duration', 'status']));
+            $createFocusSessions->execute($user, $request->only(['duration', 'status']));
 
             return response()->json(['success' => [
                 'todayfocus' => $getTodayFocus->execute($user),

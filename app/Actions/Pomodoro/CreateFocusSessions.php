@@ -11,7 +11,7 @@ class CreateFocusSessions
     public function execute(User $user, array $data)
     {
 
-        $newFocus = $user->focusSession()->create([
+        $user->focusSession()->create([
             'duration' => $data['duration'],
             'status' => $data['status'],
             'date' => now()->toDateString(),

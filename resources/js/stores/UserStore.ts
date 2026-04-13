@@ -1,6 +1,6 @@
 import api from '@/api';
 import type { FormRegisterError, User } from '@/types';
-import { router, useForm, usePage } from '@inertiajs/vue3';
+import { useForm, usePage } from '@inertiajs/vue3';
 import { defineStore } from 'pinia';
 import { toast } from 'vue-sonner';
 
